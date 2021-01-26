@@ -1,0 +1,25 @@
+{
+  "name": "remember-it-web",
+  "version": "1.0.0",
+  "description": "Notes service \"Remember it!\". Web version.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alexal3/remember-it-web.git"
+  },
+  "author": "Oleksii Bezrodnyi <alekseybezrodnyy@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/Alexal3/remember-it-web/issues"
+  },
+  "homepage": "https://github.com/Alexal3/remember-it-web#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-handlebars": "^5.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
