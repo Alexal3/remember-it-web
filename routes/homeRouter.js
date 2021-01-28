@@ -2,9 +2,9 @@ const {Router} = require('express');
 const router = Router();
 
 router.get('/', (req, res) => {
-  res.render('faq', {
-    title: 'Remember it! - заметки онлайн | FAQ'
-  })
-})
+  res.render('index', {
+    title: 'Remember it! - заметки онлайн'
+  });
+});
 
 module.exports = router;
