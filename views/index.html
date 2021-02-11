@@ -20,36 +20,50 @@
           <div class="card hoverable">
             <div class="card-content">
               <div class="input-field">
+                <input  id="create_note_title" type="text">
+                <label for="create_note_title">Заголовок</label>
+              </div>
+              <div class="input-field">
                 <textarea id="create_note" class="materialize-textarea"></textarea>
                 <label for="create_note">Не забыть сделать...</label>
+                <!-- <span class="helper-text" data-error="Это поле не может быть пустым"></span> -->
               </div>
             </div>
             <div class="card-action">
-              <a href="#" class="waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">done</i></a>
+              <button id="button_create_note_example" class="waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">done</i></button>
             </div>
           </div>
           
-          <div class="card hoverable">
+          <div id="note_example" class="card hoverable hide">
             <div class="card-content">
-              <span class="card-title">card-title</span>
-              <p>I am a very simple card. I am good at containing small bits of information.
-              I am convenient because I require little markup to use effectively.</p>
+              <span class="card-title"></span>
+              <p></p>
+              <div class="input-field hide">
+                <input id="note_title_example" type="text">
+                <label for="note_title_example"></label>
+              </div>
+              <div class="input-field hide">
+                <textarea id="note_content_example" class="materialize-textarea"></textarea>
+                <label for="note_content_example"></label>
+              </div>
+              <span class="empty_note_text hide">Пустая заметка</span>
             </div>
             <div class="card-action">
-              <a href="#" class="waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">edit</i></a>
-              <a href="#" class="waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">archive</i></a>
-              <a href="#" class="waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">delete</i></a>
+              <button id="note_example_done" class="waves-effect btn-flat hide"><i class="material-icons blue-text text-accent-2">done</i></button>
+              <button id="note_example_edit" class="waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">edit</i></button>
+              <button id="note_example_delete" class="waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">delete</i></button>
             </div>
           </div>
         </div>
       </div>
+
       <div class="col s12 m12 l6 xl6 blue lighten-2 landing-left-part valign-wrapper">
         <div class="container">
           <h3>Нравится?</h3>
 
           <p>&nbsp;</p>
           
-          <a class="waves-effect waves-light btn blue accent-2 modal-trigger" href="#register-modal">Регистрация</a>
+          <button class="waves-effect waves-light btn blue accent-2 modal-trigger" href="#register-modal">Регистрация</button>
         </div>
       </div>
     </div>
@@ -75,6 +89,7 @@
     </form>
   </div>
 
+  <script src="notes-example.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {

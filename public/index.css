@@ -31,12 +31,14 @@
 }
 
 .input-field input[type=email]:focus, 
-.input-field input[type=password]:focus {
+.input-field input[type=password]:focus,
+.input-field input[type=text]:focus {
   border-bottom: 1px solid #448AFF !important;
   box-shadow: 0 1px 0 0 #448AFF !important;
 }
 
 .input-field input[type=email]:focus + label,
-.input-field input[type=password]:focus + label {
+.input-field input[type=password]:focus + label,
+.input-field input[type=text]:focus + label {
   color: #448AFF !important;
 }
