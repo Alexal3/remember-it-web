@@ -16,14 +16,12 @@
   color: #448AFF !important;
 }
 
-.notes-header-tag,
 .notes-main-tag,
 .notes-footer-tag {
   padding-left: 300px;
 }
 
 @media only screen and (max-width : 992px) {
-  .notes-header-tag,
   .notes-main-tag, 
   .notes-footer-tag {
     padding-left: 0;
@@ -41,4 +39,15 @@
 .input-field input[type=password]:focus + label,
 .input-field input[type=text]:focus + label {
   color: #448AFF !important;
+}
+
+.brand-logo img {
+  position: relative;
+  top: 7px;
+}
+
+@media only screen and (min-width: 600px) {
+  .sidenav-trigger {
+    height: 64px !important;
+  }
 }
