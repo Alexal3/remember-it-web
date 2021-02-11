@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru" class="index-html-tag">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remember it! - заметки онлайн</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+  <main>
+    <div class="row">
+      <div class="col s12 m12 l6 xl6 blue landing-right-part valign-wrapper">
+        <div class="container">
+          <h3>Просто попробуйте!</h3>
+
+          <p>&nbsp;</p>
+
+          <div class="card hoverable">
+            <div class="card-content">
+              <div class="input-field">
+                <textarea id="create_note" class="materialize-textarea"></textarea>
+                <label for="create_note">Не забыть сделать...</label>
+              </div>
+            </div>
+            <div class="card-action">
+              <a href="#" class="waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">done</i></a>
+            </div>
+          </div>
+          
+          <div class="card hoverable">
+            <div class="card-content">
+              <span class="card-title">card-title</span>
+              <p>I am a very simple card. I am good at containing small bits of information.
+              I am convenient because I require little markup to use effectively.</p>
+            </div>
+            <div class="card-action">
+              <a href="#" class="waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">edit</i></a>
+              <a href="#" class="waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">archive</i></a>
+              <a href="#" class="waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">delete</i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col s12 m12 l6 xl6 blue lighten-2 landing-left-part valign-wrapper">
+        <div class="container">
+          <h3>Нравится?</h3>
+
+          <p>&nbsp;</p>
+          
+          <a class="waves-effect waves-light btn blue accent-2 modal-trigger" href="#register-modal">Регистрация</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="register-modal" class="modal">
+    <form action="/register" method="post">
+      <div class="modal-content">
+        <h4>Регистрация</h4>
+        <p>&nbsp;</p>
+        <div class="input-field">
+          <input id="email" type="email" name="email" class="validate">
+          <label for="email">Адрес эл. почты</label>
+        </div>
+        <div class="input-field">
+          <input id="password" type="password" name="password" class="validate">
+          <label for="password">Пароль</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-close waves-effect waves-light blue accent-2 btn">Готово!</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var elems = document.querySelectorAll('.modal');
+      var instances = M.Modal.init(elems);
+    });
+  </script>
+</body>
+</html>

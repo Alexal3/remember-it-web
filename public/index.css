@@ -1,0 +1,42 @@
+.index-html-tag {
+  height: 100vh;
+}
+
+.landing-right-part,
+.landing-left-part {
+  height: 100vh;
+}
+
+.input-field .materialize-textarea:focus {
+  border-bottom: 1px solid #448AFF !important;
+  box-shadow: 0 1px 0 0 #448AFF !important;
+}
+
+.input-field .materialize-textarea:focus + label {
+  color: #448AFF !important;
+}
+
+.notes-header-tag,
+.notes-main-tag,
+.notes-footer-tag {
+  padding-left: 300px;
+}
+
+@media only screen and (max-width : 992px) {
+  .notes-header-tag,
+  .notes-main-tag, 
+  .notes-footer-tag {
+    padding-left: 0;
+  }
+}
+
+.input-field input[type=email]:focus, 
+.input-field input[type=password]:focus {
+  border-bottom: 1px solid #448AFF !important;
+  box-shadow: 0 1px 0 0 #448AFF !important;
+}
+
+.input-field input[type=email]:focus + label,
+.input-field input[type=password]:focus + label {
+  color: #448AFF !important;
+}

@@ -1,44 +1,40 @@
 const express = require('express');
 const path = require('path');
-const exphbs = require('express-handlebars');
-const session = require('express-session');
+// const session = require('express-session');
 
-const homeRouter = require('./routes/homeRouter');
-const faqRouter = require('./routes/faqRouter');
-const notesRouter = require('./routes/notesRouter');
+const indexRoutes = require('./routes/indexRouter');
+// const faqRouter = require('./routes/faqRouter');
+const notesRoutes = require('./routes/notesRouter');
+const registerRoutes = require('./routes/registerRouter');
 
-const keys = require('./keys');
+// const keys = require('./keys');
 
 const app = express();
 
-const hbs = exphbs.create({
-  defaultLayout: 'main',
-  extname: 'hbs'
-});
-
-app.engine('hbs', hbs.engine);
-app.set('view engine', 'hbs');
-app.set('views', 'views');
+// hbs.create({
+//   extname: 'hbs'
+// });
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({
-  secret: keys.SESSION_SECRET,
-  saveUninitialized: false
-}));
+app.use(express.urlencoded({extended: true}));
 
-app.use((req, res, next) => {
-  res.session.isAuthenticated = true;
+app.use('/', indexRoutes);
+app.use('/notes', notesRoutes);
+app.use('/register', registerRoutes);
+// app.use(session({
+//   secret: keys.SESSION_SECRET,
+//   saveUninitialized: false
+// }));
 
-  next();
-});
+// app.use((req, res, next) => {
+//   res.session.isAuthenticated = true;
 
-app.use('/', homeRouter);
-app.use('/faq', faqRouter);
-app.use('/notes', notesRouter);
+//   next();
+// });
 
-app.use((req, res, next) => {
-  res.status(404).send("Not Found");
-});
+// app.use((req, res, next) => {
+//   res.status(404).send("Not Found");
+// });
 
 const PORT = process.env.PORT || 3000;
 

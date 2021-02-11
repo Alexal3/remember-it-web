@@ -1,11 +1,9 @@
 const {Router} = require('express');
+const path = require('path');
 const router = Router();
 
 router.get('/', (req, res) => {
-  console.log(123);
-  res.render('notes', {
-    title: 'Remember it! - Ваши заметки'
-  });
+  res.sendFile(path.join(__dirname, '..', 'views', 'notes.html'))
 });
 
 module.exports = router;

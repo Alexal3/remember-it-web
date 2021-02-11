@@ -1,18 +1,18 @@
-const {Router} = require('express');
-const router = Router();
+// const {Router} = require('express');
+// const router = Router();
 
-router.use((req, res, next) => {
-  if (req.session.isAuthenticated) {
-    return res.redirect('/notes');
-  }
+// router.use((req, res, next) => {
+//   if (req.session.isAuthenticated) {
+//     return res.redirect('/notes');
+//   }
   
-  next();  
-});
+//   next();  
+// });
 
-router.get('/', (req, res) => {
-  res.render('faq', {
-    title: 'Remember it! - заметки онлайн | FAQ'
-  });
-});
+// router.get('/', (req, res) => {
+//   res.render('faq', {
+//     title: 'Remember it! - заметки онлайн | FAQ'
+//   });
+// });
 
-module.exports = router;
+// module.exports = router;
