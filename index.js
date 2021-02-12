@@ -1,11 +1,15 @@
 const express = require('express');
 const path = require('path');
+const exphbs = require('express-handlebars');
 // const session = require('express-session');
 
 const indexRoutes = require('./routes/indexRouter');
 // const faqRouter = require('./routes/faqRouter');
 const notesRoutes = require('./routes/notesRouter');
+const archiveRoutes = require('./routes/archiveRouter');
+const binRoutes = require('./routes/binRouter');
 const registerRoutes = require('./routes/registerRouter');
+const addNoteRoutes = require('./routes/addNoteRouter');
 
 // const keys = require('./keys');
 
@@ -15,12 +19,24 @@ const app = express();
 //   extname: 'hbs'
 // });
 
+const hbs = exphbs.create({
+  defaultLayout: 'main',
+  extname: 'hbs'
+});
+
+app.engine('hbs', hbs.engine);
+app.set('view engine', 'hbs');
+app.set('views', 'views');
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({extended: true}));
 
 app.use('/', indexRoutes);
 app.use('/notes', notesRoutes);
+app.use('/archive', archiveRoutes);
+app.use('/bin', binRoutes);
 app.use('/register', registerRoutes);
+app.use('/add-note', addNoteRoutes);
 // app.use(session({
 //   secret: keys.SESSION_SECRET,
 //   saveUninitialized: false

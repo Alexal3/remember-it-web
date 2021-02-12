@@ -1,0 +1,43 @@
+<div class="row">
+
+  {{#if notes.length}}
+    {{#each notes}}
+      {{#if this.deleted}}
+        <div class="col xl6">
+          <div class="card hoverable">
+            {{!-- <form action="/change-note" method="post"> --}}
+              <div class="card-content">
+                <span class="card-title">{{title}}</span>
+                <p>{{body}}</p>
+              </div>
+              <div class="card-action">
+                <button class="waves-effect btn-flat hide"><i class="material-icons blue-text text-accent-2">done</i></button>
+                <button class="waves-effect btn-flat hide"><i class="material-icons blue-text text-accent-2">cancel</i></button>
+                <button class="waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">edit</i></button>
+                <button class="waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">archive</i></button>
+                <button class="waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">delete</i></button>
+              </div>
+            {{!-- </form> --}}
+          </div>
+        </div>
+      {{/if}}
+    {{/each}}
+  {{else}}
+  <div class="col xl6 offset-xl3"></div>
+  {{/if}}
+
+  <div class="col xl6">
+    <div class="card hoverable">
+      <div class="card-content">
+        <span class="card-title">Test card title</span>
+        <p>Test card body</p>
+      </div>
+      <div class="card-action">
+        <button href="#" class="waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">edit</i></button>
+        <button href="#" class="waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">archive</i></button>
+        <button href="#" class="waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">delete</i></button>
+      </div>
+    </div>
+  </div>
+
+</div>

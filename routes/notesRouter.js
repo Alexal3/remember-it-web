@@ -1,9 +1,16 @@
 const {Router} = require('express');
 const path = require('path');
+const Note = require('../models/note');
 const router = Router();
 
-router.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'views', 'notes.html'))
+router.get('/', async (req, res) => {
+  const notes = await Note.getAll();
+  // res.sendFile(path.join(__dirname, '..', 'views', 'notes.html'));
+  res.render('notes', {
+    layout: 'notes',
+    isNotes: true,
+    notes: notes.reverse()
+  });
 });
 
 module.exports = router;
