@@ -11,6 +11,48 @@ class Note {
     this.deleted = false;
   }
 
+  static async update(note) {
+    const notes = await Note.getAll();
+
+    const idx = notes.findIndex(n => n.id === note.id);
+    notes[idx] = note;
+
+    return new Promise((resolve, reject) => {
+      fs.writeFile(
+        path.join(__dirname, '..', 'data', 'notes.json'),
+        JSON.stringify(notes),
+        (err) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
+          }
+        }
+      );
+    });
+  }
+
+  static async delete(id) {
+    const notes = await Note.getAll();
+
+    const idx = notes.findIndex(n => n.id === id);
+    notes.splice(idx, 1);
+
+    return new Promise((resolve, reject) => {
+      fs.writeFile(
+        path.join(__dirname, '..', 'data', 'notes.json'),
+        JSON.stringify(notes),
+        (err) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
+          }
+        }
+      );
+    });
+  }
+
   async add() {
     const notes = await Note.getAll();
     notes.push({

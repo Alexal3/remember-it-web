@@ -10,6 +10,7 @@ const archiveRoutes = require('./routes/archiveRouter');
 const binRoutes = require('./routes/binRouter');
 const registerRoutes = require('./routes/registerRouter');
 const addNoteRoutes = require('./routes/addNoteRouter');
+const changeNoteRoutes = require('./routes/changeNoteRouter');
 
 // const keys = require('./keys');
 
@@ -37,6 +38,7 @@ app.use('/archive', archiveRoutes);
 app.use('/bin', binRoutes);
 app.use('/register', registerRoutes);
 app.use('/add-note', addNoteRoutes);
+app.use('/change-note', changeNoteRoutes);
 // app.use(session({
 //   secret: keys.SESSION_SECRET,
 //   saveUninitialized: false
