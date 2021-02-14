@@ -9,7 +9,11 @@ router.get('/', async (req, res) => {
   res.render('bin', {
     layout: 'notes',
     isNotes: true,
-    notes: notes.reverse()
+    notes: notes.filter((note) => {
+      if (note.deleted === true) {
+        return true;
+      }
+    })
   });
 });
 

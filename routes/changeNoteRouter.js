@@ -3,31 +3,7 @@ const path = require('path');
 const Note = require('../models/note');
 const router = Router();
 
-// console.log(1223);
-
 router.post('/', async (req, res) => {
-
-  // if (req.body.toDeleteForever) {
-  //   await Note.delete(req.body.id);
-
-  //   return res.redirect('/bin');
-  // }
-
-  // // if (req.body.toRestore) {
-  // //   await Note.delete(req.body.id);
-
-  // //   return res.redirect('/bin');
-  // // }
-
-  // await Note.update({
-  //   id: req.body.id,
-  //   title: req.body.title,
-  //   body: req.body.body,
-  //   archived: req.body.toArchive || false,
-  //   deleted: req.body.toDelete || false
-  // });
-
-  // res.redirect(`/${req.body.page}`);
 
   switch (req.body.page) {
     case 'notes':

@@ -2,41 +2,39 @@
 
   {{#if notes.length}}
     {{#each notes}}
-      {{#if this.archived}}
-        {{#unless this.deleted}}
-          <div class="col xl6">
-            <div class="card hoverable" id="card-id-{{id}}">
-              <form action="/change-note" method="post">
-                <div class="card-content">
-                  <span class="card-title">{{title}}</span>
-                  <p>{{body}}</p>
-                  <input type="hidden" name="id" value="{{id}}">
-                  <input type="hidden" name="page" value="archive">
-                  <div class="input-field hide">
-                    <input name="title" id="note_title_edit_{{id}}" type="text" value="{{title}}">
-                    <label for="note_title_edit_{{id}}"></label>
-                  </div>
-                  <div class="input-field hide">
-                    <textarea name="body" id="note_content_edit_{{id}}" class="materialize-textarea">{{body}}</textarea>
-                    <label for="note_content_edit_{{id}}"></label>
-                  </div>
-                  <span class="empty_note_text hide">Пустая заметка</span>
-                </div>
-                <div class="card-action">
-                  <button class="btn-done waves-effect btn-flat hide"><i class="material-icons blue-text text-accent-2">done</i></button>
-                  <button type="button" class="btn-cancel waves-effect btn-flat hide" onclick="notesCancelEdit('{{id}}')"><i class="material-icons blue-text text-accent-2">cancel</i></button>
-                  <button type="button" class="btn-edit waves-effect btn-flat" onclick="notesStartEdit('{{id}}')"><i class="material-icons blue-text text-accent-2">edit</i></button>
-                  <button name="toUnarchive" value="true" class="btn-unarchive waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">unarchive</i></button>
-                  <button name="toDelete" value="true" class="btn-delete waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">delete</i></button>
-                </div>
-              </form>
+      <div class="col xl6">
+        <div class="note card hoverable" id="card-id-{{id}}">
+          <form action="/change-note" method="post">
+            <div class="card-content">
+              <span class="card-title">{{title}}</span>
+              <p>{{body}}</p>
+              <input type="hidden" name="id" value="{{id}}">
+              <input type="hidden" name="page" value="archive">
+              <div class="input-field hide">
+                <input name="title" id="note_title_edit_{{id}}" type="text" value="{{title}}">
+                <label for="note_title_edit_{{id}}"></label>
+              </div>
+              <div class="input-field hide">
+                <textarea name="body" id="note_content_edit_{{id}}" class="materialize-textarea">{{body}}</textarea>
+                <label for="note_content_edit_{{id}}"></label>
+              </div>
+              <span class="empty_note_text grey-text hide">Пустая заметка</span>
             </div>
-          </div>   
-        {{/unless}} 
-      {{/if}}
+            <div class="card-action">
+              <button class="btn-done waves-effect btn-flat hide"><i class="material-icons blue-text text-accent-2">done</i></button>
+              <button type="button" class="btn-cancel waves-effect btn-flat hide" onclick="notesCancelEdit('{{id}}')"><i class="material-icons blue-text text-accent-2">cancel</i></button>
+              <button type="button" class="btn-edit waves-effect btn-flat" onclick="notesStartEdit('{{id}}')"><i class="material-icons blue-text text-accent-2">edit</i></button>
+              <button name="toUnarchive" value="true" class="btn-unarchive waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">unarchive</i></button>
+              <button name="toDelete" value="true" class="btn-delete waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">delete</i></button>
+            </div>
+          </form>
+        </div>
+      </div>
     {{/each}}
   {{else}}
-  <div class="col xl6 offset-xl3"></div>
+    <div class="col s12 l6 offset-l3">
+      <div class="card-panel center-align">Архив пока пуст</div>
+    </div>
   {{/if}}
 
   {{!-- <div class="col xl6">

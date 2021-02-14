@@ -1,32 +1,40 @@
 <div class="row">
 
   {{#if notes.length}}
+    <div class="col s12 l6 offset-l3">
+      <div class="card-panel center-align">
+        <form action="/clear-bin" method="post" name="formClearBin">
+          <p>Заметки хранятся 7 дней, после чего удаляются.</p>
+          <button class="waves-effect btn blue accent-2">Очистить корзину</button>
+        </form>
+      </div>
+    </div>
     {{#each notes}}
-      {{#if this.deleted}}
-        <div class="col xl6">
-          <div class="card hoverable">
-            <form action="/change-note" method="post">
-              <div class="card-content">
-                <span class="card-title">{{title}}</span>
-                <p>{{body}}</p>
-                <input type="hidden" name="archived" value="{{archived}}">
-                <input type="hidden" name="title" value="{{title}}">
-                <input type="hidden" name="body" value="{{body}}">
-                <input type="hidden" name="id" value="{{id}}">
-                <input type="hidden" name="page" value="bin">
-                <span class="empty_note_text hide">Пустая заметка</span>
-              </div>
-              <div class="card-action">
-                <button name="toDeleteForever" value="true" class="waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">delete_forever</i></button>
-                <button name="toRestore" value="true" class="waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">restore</i></button>
-              </div>
-            </form>
-          </div>
+      <div class="col xl6">
+        <div class="note card hoverable">
+          <form action="/change-note" method="post" name="handleNotesInBin">
+            <div class="card-content">
+              <span class="card-title">{{title}}</span>
+              <p>{{body}}</p>
+              <input type="hidden" name="archived" value="{{archived}}">
+              <input type="hidden" name="title" value="{{title}}">
+              <input type="hidden" name="body" value="{{body}}">
+              <input type="hidden" name="id" value="{{id}}">
+              <input type="hidden" name="page" value="bin">
+              <span class="empty_note_text grey-text hide">Пустая заметка</span>
+            </div>
+            <div class="card-action">
+              <button name="toDeleteForever" value="true" class="waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">delete_forever</i></button>
+              <button name="toRestore" value="true" class="waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">restore</i></button>
+            </div>
+          </form>
         </div>
-      {{/if}}
+      </div>
     {{/each}}
   {{else}}
-  <div class="col xl6 offset-xl3"></div>
+    <div class="col s12 l6 offset-l3">
+      <div class="card-panel center-align">Корзина пуста</div>
+    </div>
   {{/if}}
 
   {{!-- <div class="col xl6">

@@ -9,7 +9,11 @@ router.get('/', async (req, res) => {
   res.render('notes', {
     layout: 'notes',
     isNotes: true,
-    notes: notes.reverse()
+    notes: notes.filter((note) => {
+      if (note.deleted === false && note.archived === false) {
+        return true;
+      }
+    })
   });
 });
 

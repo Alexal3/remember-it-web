@@ -53,6 +53,30 @@ class Note {
     });
   }
 
+  static async deleteForeverDeletedNotes() {
+    let notes = await Note.getAll();
+
+    notes = notes.filter((note) => {
+      if (note.deleted === false) {
+        return true;
+      }
+    });
+
+    return new Promise((resovle, reject) => {
+      fs.writeFile(
+        path.join(__dirname, '..', 'data', 'notes.json'),
+        JSON.stringify(notes),
+        (err) => {
+          if (err) {
+            reject(err);
+          } else {
+            resovle();
+          }
+        }
+      );
+    });
+  }
+
   async add() {
     const notes = await Note.getAll();
     notes.push({
