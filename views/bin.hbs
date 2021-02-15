@@ -1,33 +1,33 @@
 <div class="row">
-
-  {{#if notes.length}}
-    <div class="col s12 l6 offset-l3">
-      <div class="card-panel center-align">
-        <form action="/clear-bin" method="post" name="formClearBin">
-          <p>Заметки хранятся 7 дней, после чего удаляются.</p>
-          <button class="waves-effect btn blue accent-2">Очистить корзину</button>
-        </form>
-      </div>
+  <div class="col s12 l6 offset-l3">
+    <div id="clear_bin_panel" class="card-panel center-align">
+      {{!-- <form action="/clear-bin" method="post" name="formClearBin"> --}}
+        <p>Заметки хранятся 7 дней, после чего удаляются.</p>
+        <button class="btn-clear-bin waves-effect btn blue accent-2">Очистить корзину</button>
+      {{!-- </form> --}}
     </div>
+  </div>
+</div>
+
+<div id="notes-container" class="row">
+  {{#if notes.length}}
     {{#each notes}}
       <div class="col xl6">
         <div class="note card hoverable">
-          <form action="/change-note" method="post" name="handleNotesInBin">
-            <div class="card-content">
-              <span class="card-title">{{title}}</span>
-              <p>{{body}}</p>
-              <input type="hidden" name="archived" value="{{archived}}">
-              <input type="hidden" name="title" value="{{title}}">
-              <input type="hidden" name="body" value="{{body}}">
-              <input type="hidden" name="id" value="{{id}}">
-              <input type="hidden" name="page" value="bin">
-              <span class="empty_note_text grey-text hide">Пустая заметка</span>
-            </div>
-            <div class="card-action">
-              <button name="toDeleteForever" value="true" class="waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">delete_forever</i></button>
-              <button name="toRestore" value="true" class="waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">restore</i></button>
-            </div>
-          </form>
+          <div class="card-content">
+            <span class="card-title">{{title}}</span>
+            <p>{{body}}</p>
+            <input type="hidden" name="archived" value="{{archived}}">
+            <input type="hidden" name="title" value="{{title}}">
+            <input type="hidden" name="body" value="{{body}}">
+            <input type="hidden" name="id" value="{{id}}">
+            <input type="hidden" name="page" value="bin">
+            <span class="empty_note_text grey-text hide">Пустая заметка</span>
+          </div>
+          <div class="card-action">
+            <button name="toDeleteForever" value="true" class="btn-delete-forever waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">delete_forever</i></button>
+            <button name="toRestore" value="true" class="btn-restore waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">restore</i></button>
+          </div>
         </div>
       </div>
     {{/each}}

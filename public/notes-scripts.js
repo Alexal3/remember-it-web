@@ -7,8 +7,8 @@ function notesStartEdit(noteId) {
   card.querySelectorAll('.card-content .input-field')[0].classList.remove('hide');
   card.querySelectorAll('.card-content .input-field')[1].classList.remove('hide');
 
-  // card.querySelector(`#note_title_edit_${noteId}`).value = card.querySelector('.card-content .card-title').innerHTML;
-  // card.querySelector(`#note_content_edit_${noteId}`).value = card.querySelector('.card-content p').innerHTML;
+  card.querySelector(`#note_title_edit_${noteId}`).value = card.querySelector('.card-content .card-title').innerHTML;
+  card.querySelector(`#note_content_edit_${noteId}`).value = card.querySelector('.card-content p').innerHTML;
 
   card.querySelector('.card-content .empty_note_text').classList.add('hide');
 
@@ -59,4 +59,217 @@ if (document.forms.handleNotesInBin) {
       if (!confirm('Вы уверены?')) event.preventDefault();
     }
   });
+}
+
+let $createNotePanel = document.querySelector('#create_note_panel');
+
+if ($createNotePanel) {
+  $createNotePanel.addEventListener('click', event => {
+    if (event.target.closest('.btn-new-note-done')) {
+      fetch('/add-note', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({
+          title: document.querySelector('#create_note_title').value,
+          body: document.querySelector('#create_note').value
+        })
+      })
+      .then(res => res.json())
+      .then(note => {
+        document.querySelector('#notes-container').insertAdjacentHTML('afterbegin', `
+          <div class="col xl6">
+            <div class="note card hoverable" id="card-id-${note.id}">
+              <div class="card-content">
+                <span class="card-title">${note.title}</span>
+                <p>${note.body}</p>
+                <input type="hidden" name="id" value="${note.id}">
+                <input type="hidden" name="page" value="notes">
+                <div class="input-field hide">
+                  <input name="title" id="note_title_edit_${note.id}" type="text" value="${note.title}">
+                  <label for="note_title_edit_${note.id}"></label>
+                </div>
+                <div class="input-field hide">
+                  <textarea name="body" id="note_content_edit_${note.id}" class="materialize-textarea">${note.body}</textarea>
+                  <label for="note_content_edit_${note.id}"></label>
+                </div>
+                <span class="empty_note_text grey-text hide">Пустая заметка</span>
+              </div>
+              <div class="card-action">
+                <button class="btn-done waves-effect btn-flat hide"><i class="material-icons blue-text text-accent-2">done</i></button>
+                <button type="button" class="btn-cancel waves-effect btn-flat hide" onclick="notesCancelEdit('${note.id}')"><i class="material-icons blue-text text-accent-2">cancel</i></button>
+                <button type="button" class="btn-edit waves-effect btn-flat" onclick="notesStartEdit('${note.id}')"><i class="material-icons blue-text text-accent-2">edit</i></button>
+                <button name="toArchive" value="true" class="btn-archive waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">archive</i></button>
+                <button name="toDelete" value="true" class="btn-delete waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">delete</i></button>
+              </div>
+            </div>
+          </div>
+        `);
+      })
+      .catch(err => alert(`Ошибка: ${err}`));
+    }
+  });
+}
+
+let $clearBinPanel = document.querySelector('#clear_bin_panel');
+
+if ($clearBinPanel) {
+  $clearBinPanel.addEventListener('click', event => {
+    if (event.target.closest('.btn-clear-bin')) {
+      fetch('/clear-bin', {
+        method: 'delete',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(Array.from(document.querySelectorAll('input[name="id"]')).map($elem => $elem.value))
+      })
+      .then(() => {
+        document.querySelector('#notes-container').innerHTML = '';
+      })
+      .catch(err => alert(`Ошибка: ${err}`));
+    }
+  });
+}
+
+const notes = document.querySelectorAll('.note');
+
+if (notes) {
+  for (const note of notes) {
+    note.addEventListener('click', event => {
+      if (event.target.closest('.btn-done')) {
+        fetch('/change-note', {
+          method: 'put',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: JSON.stringify({
+            id: note.querySelector('input[name="id"]').value,
+            title: note.querySelector('input[name="title"]').value,
+            body: note.querySelector('textarea[name="body"]').value,
+            archived: note.querySelector('input[name="archived"]').value
+          })
+        })
+        .then(() => {
+          note.querySelector('.card-content .card-title').textContent = note.querySelector('input[name="title"]').value;
+          note.querySelector('.card-content p').textContent = note.querySelector('textarea[name="body"]').value;
+          note.querySelector('.card-content .card-title').classList.remove('hide');
+          note.querySelector('.card-content p').classList.remove('hide');
+
+          if (note.querySelector('input[name="title"]').value === '' && note.querySelector('textarea[name="body"]').value === '') {
+            note.querySelector('.card-content .empty_note_text').classList.remove('hide');
+          }
+        
+          if (note.querySelector('input[name="title"]').value !== '' && note.querySelector('textarea[name="body"]').value !== '') {
+            note.querySelector('.card-content .empty_note_text').classList.add('hide');
+          }
+        
+          note.querySelector('input[name="title"]').value = '';
+          note.querySelector('textarea[name="body"]').value = '';
+          note.querySelectorAll('.card-content .input-field')[0].classList.add('hide');
+          note.querySelectorAll('.card-content .input-field')[1].classList.add('hide');
+        
+          note.querySelector('.btn-edit').classList.remove('hide');
+          note.querySelector('.btn-done').classList.add('hide');
+          note.querySelector('.btn-cancel').classList.add('hide');
+
+        })
+        .catch(err => alert(`Ошибка: ${err}`));
+      }
+
+      if (event.target.closest('.btn-archive')) {
+        fetch('/archive-note', {
+          method: 'put',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: JSON.stringify({
+            id: note.querySelector('input[name="id"]').value,
+            title: note.querySelector('input[name="title"]').value,
+            body: note.querySelector('textarea[name="body"]').value
+          })
+        })
+        .then(() => {
+          note.remove();
+        })
+        .catch(err => alert(`Ошибка: ${err}`));
+      }
+
+      if (event.target.closest('.btn-unarchive')) {
+        fetch('/unarchive-note', {
+          method: 'put',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: JSON.stringify({
+            id: note.querySelector('input[name="id"]').value,
+            title: note.querySelector('input[name="title"]').value,
+            body: note.querySelector('textarea[name="body"]').value
+          })
+        })
+        .then(() => {
+          note.remove();
+        })
+        .catch(err => alert(`Ошибка: ${err}`));
+      }
+
+      if (event.target.closest('.btn-delete')) {
+        fetch('/delete-note', {
+          method: 'put',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: JSON.stringify({
+            id: note.querySelector('input[name="id"]').value,
+            title: note.querySelector('input[name="title"]').value,
+            body: note.querySelector('textarea[name="body"]').value,
+            archived: note.querySelector('input[name="archived"]').value
+          })
+        })
+        .then(() => {
+          note.remove();
+        })
+        .catch(err => alert(`Ошибка: ${err}`));
+      }
+
+      if (event.target.closest('.btn-delete-forever')) {
+        fetch('/delete-forever-note', {
+          method: 'delete',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: JSON.stringify({
+            id: note.querySelector('input[name="id"]').value
+          })
+        })
+        .then(() => {
+          note.remove();
+        })
+        .catch(err => alert(`Ошибка: ${err}`));
+      }
+
+      if (event.target.closest('.btn-restore')) {
+        fetch('/restore-note', {
+          method: 'put',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: JSON.stringify({
+            id: note.querySelector('input[name="id"]').value,
+            title: note.querySelector('.card-content .card-title').innerHTML,
+            body: note.querySelector('.card-content p').innerHTML,
+            archived: note.querySelector('input[name="archived"]').value
+          })
+        })
+        .then(() => {
+          note.remove();
+        })
+        .catch(err => alert(`Ошибка: ${err}`));
+      }
+    });
+  }
+}
+
+function handleClickOnNote(event) {
+  
 }

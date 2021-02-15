@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
       if (note.deleted === false && note.archived === false) {
         return true;
       }
-    })
+    }).reverse()
   });
 });
 

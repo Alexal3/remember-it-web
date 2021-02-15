@@ -3,10 +3,10 @@ const path = require('path');
 const Note = require('../models/note');
 const router = Router();
 
-router.post('/', async (req, res) => {
+router.delete('/', async (req, res) => {
   await Note.deleteForeverDeletedNotes();
   
-  res.redirect('/bin');
+  res.end();
 });
 
 module.exports = router;

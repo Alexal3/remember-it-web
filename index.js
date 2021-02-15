@@ -11,6 +11,11 @@ const binRoutes = require('./routes/binRouter');
 const registerRoutes = require('./routes/registerRouter');
 const addNoteRoutes = require('./routes/addNoteRouter');
 const changeNoteRoutes = require('./routes/changeNoteRouter');
+const archiveNoteRoutes = require('./routes/archiveNoteRouter');
+const unarchiveNoteRoutes = require('./routes/unarchiveNoteRouter');
+const deleteNoteRoutes = require('./routes/deleteNoteRouter');
+const deleteForeverNoteRoutes = require('./routes/deleteForeverNoteRouter');
+const restoreNoteRoutes = require('./routes/restoreNoteRouter');
 const clearBinRoutes = require('./routes/clearBinRouter');
 
 // const keys = require('./keys');
@@ -40,6 +45,11 @@ app.use('/bin', binRoutes);
 app.use('/register', registerRoutes);
 app.use('/add-note', addNoteRoutes);
 app.use('/change-note', changeNoteRoutes);
+app.use('/archive-note', archiveNoteRoutes);
+app.use('/unarchive-note', unarchiveNoteRoutes);
+app.use('/delete-note', deleteNoteRoutes);
+app.use('/delete-forever-note', deleteForeverNoteRoutes);
+app.use('/restore-note', restoreNoteRoutes);
 app.use('/clear-bin', clearBinRoutes);
 // app.use(session({
 //   secret: keys.SESSION_SECRET,
