@@ -91,17 +91,6 @@ async function start() {
       useUnifiedTopology: true,
       useFindAndModify: false
     });
-
-    const candidate = await User.findOne();
-    if (!candidate) {
-      const user = new User({
-        email: 'alexal@alexal3.com',
-        password: '123456',
-        notes: []
-      });
-      await user.save();
-    }
-
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
