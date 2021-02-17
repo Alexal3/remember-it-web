@@ -9,7 +9,8 @@ router.post('/', jsonParser, async (req, res) => {
     title: req.body.title,
     body: req.body.body,
     archived: false,
-    deleted: false
+    deleted: false,
+    userId: req.user
   });
 
   try {

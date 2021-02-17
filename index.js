@@ -4,6 +4,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const exphbs = require('express-handlebars');
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
+const User = require('./models/user');
 // const session = require('express-session');
 
 const indexRoutes = require('./routes/indexRouter');
@@ -38,6 +39,16 @@ const hbs = exphbs.create({
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.set('views', 'views');
+
+app.use(async (req, res, next) => {
+  try {
+    const user = await User.findById('602d213d4870cd3b1cd88f03')
+    req.user = user;
+    next();
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({extended: true}));
@@ -80,6 +91,17 @@ async function start() {
       useUnifiedTopology: true,
       useFindAndModify: false
     });
+
+    const candidate = await User.findOne();
+    if (!candidate) {
+      const user = new User({
+        email: 'alexal@alexal3.com',
+        password: '123456',
+        notes: []
+      });
+      await user.save();
+    }
+
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });

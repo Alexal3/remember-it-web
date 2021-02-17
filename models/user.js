@@ -8,7 +8,16 @@ const user = new Schema({
   password: {
     type: String,
     required: true
-  }
+  },
+  notes: [
+    {
+      noteId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Note',
+        required: true
+      }
+    }
+  ]
 });
 
 module.exports = model('User', user);

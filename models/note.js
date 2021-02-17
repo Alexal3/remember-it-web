@@ -16,6 +16,10 @@ const note = new Schema({
   deleted: {
     type: Boolean,
     required: true
+  },
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
   }
 });
 
