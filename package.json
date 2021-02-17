@@ -16,10 +16,13 @@
   },
   "homepage": "https://github.com/Alexal3/remember-it-web#readme",
   "dependencies": {
+    "@handlebars/allow-prototype-access": "^1.0.3",
     "express": "^4.17.1",
     "express-handlebars": "^5.2.0",
     "express-session": "^1.17.1",
+    "handlebars": "^4.7.7",
     "hbs": "^4.1.1",
+    "mongoose": "^5.11.16",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

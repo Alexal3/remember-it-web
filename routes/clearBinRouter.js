@@ -4,9 +4,15 @@ const Note = require('../models/note');
 const router = Router();
 
 router.delete('/', async (req, res) => {
-  await Note.deleteForeverDeletedNotes();
-  
-  res.end();
+  try {
+    await Note.deleteMany({
+      deleted: true
+    });
+    
+    res.end();
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 module.exports = router;

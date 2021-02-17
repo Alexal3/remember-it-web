@@ -5,15 +5,15 @@ const router = Router();
 const jsonParser = require('express').json();
 
 router.put('/', jsonParser, async (req, res) => {
-  await Note.update({
-    id: req.body.id,
-    title: req.body.title,
-    body: req.body.body,
-    archived: req.body.archived,
-    deleted: true
-  });
-
-  res.end();
+  try {
+    await Note.findByIdAndUpdate(req.body.id, {
+      deleted: true
+    });
+  
+    res.end();
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 module.exports = router;

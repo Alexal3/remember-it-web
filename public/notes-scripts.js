@@ -146,8 +146,7 @@ if (notes) {
           body: JSON.stringify({
             id: note.querySelector('input[name="id"]').value,
             title: note.querySelector('input[name="title"]').value,
-            body: note.querySelector('textarea[name="body"]').value,
-            archived: note.querySelector('input[name="archived"]').value
+            body: note.querySelector('textarea[name="body"]').value
           })
         })
         .then(() => {
@@ -184,9 +183,7 @@ if (notes) {
             'Content-Type': 'application/json;charset=utf-8'
           },
           body: JSON.stringify({
-            id: note.querySelector('input[name="id"]').value,
-            title: note.querySelector('input[name="title"]').value,
-            body: note.querySelector('textarea[name="body"]').value
+            id: note.querySelector('input[name="id"]').value
           })
         })
         .then(() => {
@@ -202,9 +199,7 @@ if (notes) {
             'Content-Type': 'application/json;charset=utf-8'
           },
           body: JSON.stringify({
-            id: note.querySelector('input[name="id"]').value,
-            title: note.querySelector('input[name="title"]').value,
-            body: note.querySelector('textarea[name="body"]').value
+            id: note.querySelector('input[name="id"]').value
           })
         })
         .then(() => {
@@ -220,10 +215,7 @@ if (notes) {
             'Content-Type': 'application/json;charset=utf-8'
           },
           body: JSON.stringify({
-            id: note.querySelector('input[name="id"]').value,
-            title: note.querySelector('input[name="title"]').value,
-            body: note.querySelector('textarea[name="body"]').value,
-            archived: note.querySelector('input[name="archived"]').value
+            id: note.querySelector('input[name="id"]').value
           })
         })
         .then(() => {
@@ -255,10 +247,7 @@ if (notes) {
             'Content-Type': 'application/json;charset=utf-8'
           },
           body: JSON.stringify({
-            id: note.querySelector('input[name="id"]').value,
-            title: note.querySelector('.card-content .card-title').innerHTML,
-            body: note.querySelector('.card-content p').innerHTML,
-            archived: note.querySelector('input[name="archived"]').value
+            id: note.querySelector('input[name="id"]').value
           })
         })
         .then(() => {

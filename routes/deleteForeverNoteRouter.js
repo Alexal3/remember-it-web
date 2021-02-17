@@ -5,9 +5,13 @@ const router = Router();
 const jsonParser = require('express').json();
 
 router.delete('/', jsonParser, async (req, res) => {
-  await Note.delete(req.body.id);
-
-  res.end();
+  try {
+    await Note.findByIdAndDelete(req.body.id);
+  
+    res.end();
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 module.exports = router;

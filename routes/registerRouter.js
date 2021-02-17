@@ -4,11 +4,17 @@ const User = require('../models/user');
 const router = Router();
 
 router.post('/', async (req, res) => {
-  const user = new User(req.body.email, req.body.password);
+  const user = new User({
+    email: req.body.email,
+    password: req.body.password
+  });
 
-  await user.register();
-
-  res.redirect('/notes');
+  try {
+    await user.save();
+    res.redirect('/notes');
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 module.exports = router;

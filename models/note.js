@@ -1,122 +1,145 @@
-const uuid = require('uuid');
-const fs = require('fs');
-const path = require('path');
+const {Schema, model} = require('mongoose');
 
-class Note {
-  constructor (title, body) {
-    this.title = title;
-    this.body = body;
-    this.id = uuid.v4();
-    this.archived = false;
-    this.deleted = false;
+const note = new Schema({
+  title: {
+    type: String,
+    required: false
+  },
+  body: {
+    type: String,
+    required: false
+  },
+  archived: {
+    type: Boolean,
+    required: true
+  },
+  deleted: {
+    type: Boolean,
+    required: true
   }
+});
 
-  static async update(note) {
-    const notes = await Note.getAll();
+module.exports = model('Note', note);
 
-    const idx = notes.findIndex(n => n.id === note.id);
-    notes[idx] = note;
+// const uuid = require('uuid');
+// const fs = require('fs');
+// const path = require('path');
 
-    return new Promise((resolve, reject) => {
-      fs.writeFile(
-        path.join(__dirname, '..', 'data', 'notes.json'),
-        JSON.stringify(notes),
-        (err) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve();
-          }
-        }
-      );
-    });
-  }
+// class Note {
+//   constructor (title, body) {
+//     this.title = title;
+//     this.body = body;
+//     this.id = uuid.v4();
+//     this.archived = false;
+//     this.deleted = false;
+//   }
 
-  static async delete(id) {
-    const notes = await Note.getAll();
+//   static async update(note) {
+//     const notes = await Note.getAll();
 
-    const idx = notes.findIndex(n => n.id === id);
-    notes.splice(idx, 1);
+//     const idx = notes.findIndex(n => n.id === note.id);
+//     notes[idx] = note;
 
-    return new Promise((resolve, reject) => {
-      fs.writeFile(
-        path.join(__dirname, '..', 'data', 'notes.json'),
-        JSON.stringify(notes),
-        (err) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve();
-          }
-        }
-      );
-    });
-  }
+//     return new Promise((resolve, reject) => {
+//       fs.writeFile(
+//         path.join(__dirname, '..', 'data', 'notes.json'),
+//         JSON.stringify(notes),
+//         (err) => {
+//           if (err) {
+//             reject(err);
+//           } else {
+//             resolve();
+//           }
+//         }
+//       );
+//     });
+//   }
 
-  static async deleteForeverDeletedNotes() {
-    let notes = await Note.getAll();
+//   static async delete(id) {
+//     const notes = await Note.getAll();
 
-    notes = notes.filter((note) => {
-      if (note.deleted === false) {
-        return true;
-      }
-    });
+//     const idx = notes.findIndex(n => n.id === id);
+//     notes.splice(idx, 1);
 
-    return new Promise((resovle, reject) => {
-      fs.writeFile(
-        path.join(__dirname, '..', 'data', 'notes.json'),
-        JSON.stringify(notes),
-        (err) => {
-          if (err) {
-            reject(err);
-          } else {
-            resovle();
-          }
-        }
-      );
-    });
-  }
+//     return new Promise((resolve, reject) => {
+//       fs.writeFile(
+//         path.join(__dirname, '..', 'data', 'notes.json'),
+//         JSON.stringify(notes),
+//         (err) => {
+//           if (err) {
+//             reject(err);
+//           } else {
+//             resolve();
+//           }
+//         }
+//       );
+//     });
+//   }
 
-  async add() {
-    const notes = await Note.getAll();
-    notes.push({
-      title: this.title,
-      body: this.body,
-      id: this.id,
-      archived: this.archived,
-      deleted: this.deleted
-    });
+//   static async deleteForeverDeletedNotes() {
+//     let notes = await Note.getAll();
 
-    return new Promise((resovle, reject) => {
-      fs.writeFile(
-        path.join(__dirname, '..', 'data', 'notes.json'),
-        JSON.stringify(notes),
-        (err) => {
-          if (err) {
-            reject(err);
-          } else {
-            resovle();
-          }
-        }
-      );
-    });
-  }
+//     notes = notes.filter((note) => {
+//       if (note.deleted === false) {
+//         return true;
+//       }
+//     });
 
-  static getAll() {
-    return new Promise((resovle, reject) => {
-      fs.readFile(
-        path.join(__dirname, '..', 'data', 'notes.json'),
-        'utf-8',
-        (err, content) => {
-          if (err) {
-            reject(err);
-          } else {
-            resovle(JSON.parse(content));
-          }
-        }
-      );
-    });
-  }
-}
+//     return new Promise((resovle, reject) => {
+//       fs.writeFile(
+//         path.join(__dirname, '..', 'data', 'notes.json'),
+//         JSON.stringify(notes),
+//         (err) => {
+//           if (err) {
+//             reject(err);
+//           } else {
+//             resovle();
+//           }
+//         }
+//       );
+//     });
+//   }
 
-module.exports = Note;
+//   async add() {
+//     const notes = await Note.getAll();
+//     notes.push({
+//       title: this.title,
+//       body: this.body,
+//       id: this.id,
+//       archived: this.archived,
+//       deleted: this.deleted
+//     });
+
+//     return new Promise((resovle, reject) => {
+//       fs.writeFile(
+//         path.join(__dirname, '..', 'data', 'notes.json'),
+//         JSON.stringify(notes),
+//         (err) => {
+//           if (err) {
+//             reject(err);
+//           } else {
+//             resovle();
+//           }
+//         }
+//       );
+//     });
+//   }
+
+//   static getAll() {
+//     return new Promise((resovle, reject) => {
+//       fs.readFile(
+//         path.join(__dirname, '..', 'data', 'notes.json'),
+//         'utf-8',
+//         (err, content) => {
+//           if (err) {
+//             reject(err);
+//           } else {
+//             resovle(JSON.parse(content));
+//           }
+//         }
+//       );
+//     });
+//   }
+// }
+
+// module.exports = Note;

@@ -5,12 +5,26 @@ const router = Router();
 const jsonParser = require('express').json();
 
 router.post('/', jsonParser, async (req, res) => {
-  const note = new Note(req.body.title, req.body.body);
+  const note = new Note({
+    title: req.body.title,
+    body: req.body.body,
+    archived: false,
+    deleted: false
+  });
 
-  await note.add();
+  try {
+    await note.save();
+    res.json(note);
+  } catch (err) {
+    console.log(err);
+  }
 
-  res.json(note);
-  // res.send("success");
+  // const note = new Note(req.body.title, req.body.body);
+
+  // await note.add();
+
+  // res.json(note);
+  // // res.send("success");
 });
 
 module.exports = router;

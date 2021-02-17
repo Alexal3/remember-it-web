@@ -4,17 +4,21 @@ const Note = require('../models/note');
 const router = Router();
 
 router.get('/', async (req, res) => {
-  const notes = await Note.getAll();
-
-  res.render('bin', {
-    layout: 'notes',
-    isNotes: true,
-    notes: notes.filter((note) => {
-      if (note.deleted === true) {
-        return true;
-      }
-    }).reverse()
-  });
+  try {
+    const notes = await Note.find({
+      deleted: true
+    }).sort({ 
+      $natural: -1 
+    });
+  
+    res.render('bin', {
+      layout: 'notes',
+      isNotes: true,
+      notes: notes
+    });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 module.exports = router;
