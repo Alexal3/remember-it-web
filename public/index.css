@@ -51,3 +51,12 @@
     height: 64px !important;
   }
 }
+
+.index-navbar-fixed-tag {
+  height: 0 !important;
+}
+
+.btn-login-in-landing {
+  margin-left: 15px;
+  /* transition: none !important; */
+}
