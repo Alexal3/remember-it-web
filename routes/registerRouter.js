@@ -5,14 +5,32 @@ const redirectToNotesIfAuthenticated = require('../middleware/redirectToNotesIfA
 const router = Router();
 
 router.post('/', redirectToNotesIfAuthenticated, async (req, res) => {
-  const user = new User({
-    email: req.body.email,
-    password: req.body.password
-  });
-
   try {
-    await user.save();
-    res.redirect('/notes');
+    const {email, password, passwordConfirm} = req.body;
+    const candidate = await User.findOne({ email });
+
+    if (candidate) {
+      ////////////
+      res.redirect('/') // Here will be generating of error, because another user use provided email 
+      ////////////
+    } else {
+      const user = new User({
+        email,
+        password,
+        notes: []
+      });
+      await user.save();
+
+      req.session.user = user;
+      req.session.isAuthenticated = true;
+
+      req.session.save(err => {
+        if (err) {
+          throw err;
+        }
+        res.redirect('/notes');
+      });
+    }
   } catch (err) {
     console.log(err);
   }
