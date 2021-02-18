@@ -1,5 +1,6 @@
 const {Router} = require('express');
 const path = require('path');
+const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const redirectToNotesIfAuthenticated = require('../middleware/redirectToNotesIfAuthenticated');
 const router = Router();
@@ -14,9 +15,11 @@ router.post('/', redirectToNotesIfAuthenticated, async (req, res) => {
       res.redirect('/') // Here will be generating of error, because another user use provided email 
       ////////////
     } else {
+      const hashPassword = await bcrypt.hash(password, 10)
+
       const user = new User({
         email,
-        password,
+        password: hashPassword,
         notes: []
       });
       await user.save();
