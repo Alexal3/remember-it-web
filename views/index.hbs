@@ -101,6 +101,7 @@
             <input id="reg_password_confirm" type="password" name="passwordConfirm" class="validate">
             <label for="reg_password_confirm">Подтвердите пароль</label>
           </div>
+          <input type="hidden" name="_csrf" value="{{csrf}}">
         </div>
       </div>
       <div class="modal-footer">
@@ -125,6 +126,7 @@
             <input id="login_password" type="password" name="password" class="validate">
             <label for="login_password">Пароль</label>
           </div>
+          <input type="hidden" name="_csrf" value="{{csrf}}">
         </div>
       </div>
       <div class="modal-footer">

@@ -61,6 +61,8 @@ if (document.forms.handleNotesInBin) {
   });
 }
 
+const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
 let $createNotePanel = document.querySelector('#create_note_panel');
 
 if ($createNotePanel) {
@@ -69,7 +71,8 @@ if ($createNotePanel) {
       fetch('/add-note', {
         method: 'post',
         headers: {
-          'Content-Type': 'application/json;charset=utf-8'
+          'Content-Type': 'application/json;charset=utf-8',
+          'CSRF-Token': token
         },
         body: JSON.stringify({
           title: document.querySelector('#create_note_title').value,
@@ -120,7 +123,8 @@ if ($clearBinPanel) {
       fetch('/clear-bin', {
         method: 'delete',
         headers: {
-          'Content-Type': 'application/json;charset=utf-8'
+          'Content-Type': 'application/json;charset=utf-8',
+          'CSRF-Token': token
         },
         body: JSON.stringify(Array.from(document.querySelectorAll('input[name="id"]')).map($elem => $elem.value))
       })
@@ -141,7 +145,8 @@ if (notes) {
         fetch('/change-note', {
           method: 'put',
           headers: {
-            'Content-Type': 'application/json;charset=utf-8'
+            'Content-Type': 'application/json;charset=utf-8',
+            'CSRF-Token': token
           },
           body: JSON.stringify({
             id: note.querySelector('input[name="id"]').value,
@@ -180,7 +185,8 @@ if (notes) {
         fetch('/archive-note', {
           method: 'put',
           headers: {
-            'Content-Type': 'application/json;charset=utf-8'
+            'Content-Type': 'application/json;charset=utf-8',
+            'CSRF-Token': token
           },
           body: JSON.stringify({
             id: note.querySelector('input[name="id"]').value
@@ -196,7 +202,8 @@ if (notes) {
         fetch('/unarchive-note', {
           method: 'put',
           headers: {
-            'Content-Type': 'application/json;charset=utf-8'
+            'Content-Type': 'application/json;charset=utf-8',
+            'CSRF-Token': token
           },
           body: JSON.stringify({
             id: note.querySelector('input[name="id"]').value
@@ -212,7 +219,8 @@ if (notes) {
         fetch('/delete-note', {
           method: 'put',
           headers: {
-            'Content-Type': 'application/json;charset=utf-8'
+            'Content-Type': 'application/json;charset=utf-8',
+            'CSRF-Token': token
           },
           body: JSON.stringify({
             id: note.querySelector('input[name="id"]').value
@@ -228,7 +236,8 @@ if (notes) {
         fetch('/delete-forever-note', {
           method: 'delete',
           headers: {
-            'Content-Type': 'application/json;charset=utf-8'
+            'Content-Type': 'application/json;charset=utf-8',
+            'CSRF-Token': token
           },
           body: JSON.stringify({
             id: note.querySelector('input[name="id"]').value
@@ -244,7 +253,8 @@ if (notes) {
         fetch('/restore-note', {
           method: 'put',
           headers: {
-            'Content-Type': 'application/json;charset=utf-8'
+            'Content-Type': 'application/json;charset=utf-8',
+            'CSRF-Token': token
           },
           body: JSON.stringify({
             id: note.querySelector('input[name="id"]').value
