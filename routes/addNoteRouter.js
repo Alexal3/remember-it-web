@@ -1,10 +1,11 @@
 const {Router} = require('express');
 const path = require('path');
 const Note = require('../models/note');
+const redirectToIndexIfNotAuthenticated = require('../middleware/redirectToIndexIfNotAuthenticated');
 const router = Router();
 const jsonParser = require('express').json();
 
-router.post('/', jsonParser, async (req, res) => {
+router.post('/', redirectToIndexIfNotAuthenticated, jsonParser, async (req, res) => {
   const note = new Note({
     title: req.body.title,
     body: req.body.body,

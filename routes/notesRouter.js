@@ -1,9 +1,10 @@
 const {Router} = require('express');
 const path = require('path');
 const Note = require('../models/note');
+const redirectToIndexIfNotAuthenticated = require('../middleware/redirectToIndexIfNotAuthenticated');
 const router = Router();
 
-router.get('/', async (req, res) => {
+router.get('/', redirectToIndexIfNotAuthenticated, async (req, res) => {
   try {
     const notes = await Note.find({
       archived: false,

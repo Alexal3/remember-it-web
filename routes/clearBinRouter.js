@@ -1,9 +1,10 @@
 const {Router} = require('express');
 const path = require('path');
 const Note = require('../models/note');
+const redirectToIndexIfNotAuthenticated = require('../middleware/redirectToIndexIfNotAuthenticated');
 const router = Router();
 
-router.delete('/', async (req, res) => {
+router.delete('/', redirectToIndexIfNotAuthenticated, async (req, res) => {
   try {
     await Note.deleteMany({
       deleted: true
