@@ -4,8 +4,10 @@ const path = require('path');
 const mongoose = require('mongoose');
 const exphbs = require('express-handlebars');
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
+const session = require('express-session');
+const MongoStore = require('connect-mongodb-session')(session);
 const User = require('./models/user');
-// const session = require('express-session');
+const varMiddleware = require('./middleware/variables');
 
 const indexRoutes = require('./routes/indexRouter');
 // const faqRouter = require('./routes/faqRouter');
@@ -13,6 +15,8 @@ const notesRoutes = require('./routes/notesRouter');
 const archiveRoutes = require('./routes/archiveRouter');
 const binRoutes = require('./routes/binRouter');
 const registerRoutes = require('./routes/registerRouter');
+const loginRoutes = require('./routes/loginRouter');
+const logoutRoutes = require('./routes/logoutRouter');
 const addNoteRoutes = require('./routes/addNoteRouter');
 const changeNoteRoutes = require('./routes/changeNoteRouter');
 const archiveNoteRoutes = require('./routes/archiveNoteRouter');
@@ -24,40 +28,52 @@ const clearBinRoutes = require('./routes/clearBinRouter');
 
 // const keys = require('./keys');
 
+const MONGODB_URI = 'mongodb+srv://user1:k6SANOBkaR3aG6MQ@cluster0.rbhru.mongodb.net/notes?retryWrites=true&w=majority';
 const app = express();
-
 // hbs.create({
 //   extname: 'hbs'
 // });
-
 const hbs = exphbs.create({
   defaultLayout: 'main',
   extname: 'hbs',
   handlebars: allowInsecurePrototypeAccess(Handlebars)
+});
+const store = new MongoStore({
+  collection: 'sessions',
+  uri: MONGODB_URI
 });
 
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.set('views', 'views');
 
-app.use(async (req, res, next) => {
-  try {
-    const user = await User.findById('602d213d4870cd3b1cd88f03')
-    req.user = user;
-    next();
-  } catch (err) {
-    console.log(err);
-  }
-});
+// app.use(async (req, res, next) => {
+//   try {
+//     const user = await User.findById('602d213d4870cd3b1cd88f03');
+//     req.user = user;
+//     next();
+//   } catch (err) {
+//     console.log(err);
+//   }
+// });
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({extended: true}));
+app.use(session({
+  secret: 'some secret value',
+  resave: false,
+  saveUninitialized: false,
+  store
+}));
+app.use(varMiddleware);
 
 app.use('/', indexRoutes);
 app.use('/notes', notesRoutes);
 app.use('/archive', archiveRoutes);
 app.use('/bin', binRoutes);
 app.use('/register', registerRoutes);
+app.use('/login', loginRoutes);
+app.use('/logout', logoutRoutes);
 app.use('/add-note', addNoteRoutes);
 app.use('/change-note', changeNoteRoutes);
 app.use('/archive-note', archiveNoteRoutes);
@@ -85,8 +101,7 @@ const PORT = process.env.PORT || 3000;
 
 async function start() {
   try {
-    const url = 'mongodb+srv://user1:k6SANOBkaR3aG6MQ@cluster0.rbhru.mongodb.net/notes?retryWrites=true&w=majority';
-    await mongoose.connect(url, {
+    await mongoose.connect(MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useFindAndModify: false
