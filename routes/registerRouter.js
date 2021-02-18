@@ -4,18 +4,20 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const redirectToNotesIfAuthenticated = require('../middleware/redirectToNotesIfAuthenticated');
 const router = Router();
+const jsonParser = require('express').json();
 
-router.post('/', redirectToNotesIfAuthenticated, async (req, res) => {
+router.post('/', redirectToNotesIfAuthenticated, jsonParser, async (req, res) => {
   try {
-    const {email, password, passwordConfirm} = req.body;
+    const {email, password} = req.body;
     const candidate = await User.findOne({ email });
 
     if (candidate) {
-      ////////////
-      res.redirect('/') // Here will be generating of error, because another user use provided email 
-      ////////////
+      res.json({
+        status: 'error',
+        description: 'Такой email уже занят'
+      });
     } else {
-      const hashPassword = await bcrypt.hash(password, 10)
+      const hashPassword = await bcrypt.hash(password, 10);
 
       const user = new User({
         email,
@@ -31,7 +33,9 @@ router.post('/', redirectToNotesIfAuthenticated, async (req, res) => {
         if (err) {
           throw err;
         }
-        res.redirect('/notes');
+        res.json({
+          status: 'success'
+        });
       });
     }
   } catch (err) {

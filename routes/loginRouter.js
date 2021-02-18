@@ -4,8 +4,9 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const redirectToNotesIfAuthenticated = require('../middleware/redirectToNotesIfAuthenticated');
 const router = Router();
+const jsonParser = require('express').json();
 
-router.post('/', redirectToNotesIfAuthenticated, async (req, res) => {
+router.post('/', redirectToNotesIfAuthenticated, jsonParser, async (req, res) => {
   try {
     const {email, password} = req.body;
     const candidate = await User.findOne({ email });
@@ -20,17 +21,21 @@ router.post('/', redirectToNotesIfAuthenticated, async (req, res) => {
           if (err) {
             throw err;
           }
-          res.redirect('/notes');
+          res.json({
+            status: 'success'
+          });
         })
       } else {
-        ////////////
-        res.redirect('/'); // Here will be generating of error, because password is incorrect 
-        ////////////
+        res.json({
+          status: 'error',
+          description: 'Неверный пароль'
+        });
       }
     } else {
-      ////////////
-      res.redirect('/'); // Here will be generating of error, because there are not ary users with provided email 
-      ////////////
+      res.json({
+        status: 'error',
+        description: 'Пользователь с таким email не найден'
+      });
     }
   } catch (err) {
     console.log(err);
