@@ -1,10 +1,21 @@
 const {Router} = require('express');
 const path = require('path');
 const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
 const User = require('../models/user');
 const redirectToNotesIfAuthenticated = require('../middleware/redirectToNotesIfAuthenticated');
+const regEmail = require('../emails/registration');
 const router = Router();
 const jsonParser = require('express').json();
+
+const transporter = nodemailer.createTransport({
+  host: "smtp.ethereal.email",
+  port: 587,
+  auth: {
+    user: 'damien.heller8@ethereal.email', 
+    pass: 'wH19wvJNRmp7v2Ttzb'
+  }
+});
 
 router.post('/', redirectToNotesIfAuthenticated, jsonParser, async (req, res) => {
   try {
@@ -29,13 +40,14 @@ router.post('/', redirectToNotesIfAuthenticated, jsonParser, async (req, res) =>
       req.session.user = user;
       req.session.isAuthenticated = true;
 
-      req.session.save(err => {
+      req.session.save(async err => {
         if (err) {
           throw err;
         }
         res.json({
           status: 'success'
         });
+        await transporter.sendMail(regEmail(email));
       });
     }
   } catch (err) {
