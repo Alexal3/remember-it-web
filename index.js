@@ -28,6 +28,7 @@ const deleteNoteRoutes = require('./routes/deleteNoteRouter');
 const deleteForeverNoteRoutes = require('./routes/deleteForeverNoteRouter');
 const restoreNoteRoutes = require('./routes/restoreNoteRouter');
 const clearBinRoutes = require('./routes/clearBinRouter');
+const resetPasswordRoutes = require('./routes/resetPasswordRouter');
 
 const app = express();
 // hbs.create({
@@ -84,6 +85,7 @@ app.use('/delete-note', deleteNoteRoutes);
 app.use('/delete-forever-note', deleteForeverNoteRoutes);
 app.use('/restore-note', restoreNoteRoutes);
 app.use('/clear-bin', clearBinRoutes);
+app.use('/reset', resetPasswordRoutes);
 // app.use(session({
 //   secret: keys.SESSION_SECRET,
 //   saveUninitialized: false

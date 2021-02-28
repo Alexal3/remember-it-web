@@ -132,10 +132,30 @@
       </div>
       <div class="modal-footer">
         <div class="container">
+          <button class="btn-forgot-password waves-effect waves-light btn-flat modal-trigger" href="#forgot-password">Забыли пароль?</button>
           <button class="btn-login modal-close waves-effect waves-light blue accent-2 btn">Готово!</button>
         </div>
       </div>
     {{!-- </form> --}}
+  </div>
+
+  <div class="modal" id="forgot-password">
+    <div class="modal-content">
+      <div class="container">
+        <h4 class="center-align">Сброс пароля</h4>
+        <p>&nbsp;</p>
+        <div class="input-field">
+          <input id="reset_password_email" type="email" name="email" class="validate">
+          <label for="reset_password_email">Адрес эл. почты</label>
+        </div>
+        <input type="hidden" name="_csrf" value="{{csrf}}">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="container">
+        <button class="btn-reset-password modal-close waves-effect waves-light blue accent-2 btn">Сбросить</button>
+      </div>
+    </div>
   </div>
 
   <script src="notes-example.js"></script>
