@@ -7,6 +7,7 @@ const router = Router();
 router.get('/', redirectToIndexIfNotAuthenticated, async (req, res) => {
   try {
     const notes = await Note.find({
+      userId: req.user._id,
       deleted: true
     }).sort({ 
       $natural: -1 

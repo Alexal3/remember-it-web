@@ -7,11 +7,14 @@ const jsonParser = require('express').json();
 
 router.put('/', redirectToIndexIfNotAuthenticated, jsonParser, async (req, res) => {
   try {
-    await Note.findByIdAndUpdate(req.body.id, {
-      title: req.body.title,
-      body: req.body.body
-    });
-  
+    const {id} = req.body;
+    delete req.body.id;
+    const note = await Note.findById(id);
+    if (note.userId.toString() !== req.user._id.toString()) {
+      return res.end();
+    }
+    Object.assign(note, req.body);
+    await note.save();
     res.end();
   } catch (err) {
     console.log(err);

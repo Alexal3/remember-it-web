@@ -125,8 +125,7 @@ if ($clearBinPanel) {
         headers: {
           'Content-Type': 'application/json;charset=utf-8',
           'CSRF-Token': token
-        },
-        body: JSON.stringify(Array.from(document.querySelectorAll('input[name="id"]')).map($elem => $elem.value))
+        }
       })
       .then(() => {
         document.querySelector('#notes-container').innerHTML = '';

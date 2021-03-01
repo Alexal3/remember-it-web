@@ -7,8 +7,10 @@ const jsonParser = require('express').json();
 
 router.delete('/', redirectToIndexIfNotAuthenticated, jsonParser, async (req, res) => {
   try {
-    await Note.findByIdAndDelete(req.body.id);
-  
+    await Note.deleteOne({
+      _id: req.body.id,
+      userId: req.user._id
+    });
     res.end();
   } catch (err) {
     console.log(err);
