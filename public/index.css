@@ -60,3 +60,12 @@
   margin-left: 15px;
   /* transition: none !important; */
 }
+
+.alert {
+  padding: 10px 10px;
+  border-radius: 10px;
+  text-align: center;
+  margin: 10px 0;
+  background: rgba(41, 98, 255, 1);
+  color: white;
+}

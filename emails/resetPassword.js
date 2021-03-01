@@ -10,6 +10,7 @@ module.exports = function(email, token) {
       <p>Если вы не запрашивали сброс пароля, то просто проигнорируйте это письмо.</p>
       <p>Иначе нажмите на ссылку ниже:</p>
       <p><a href="${keys.BASE_URL}/reset/${token}">Сбросить пароль</a></p>
+      <p>Ссылка действительна 1 час.</p>
       <hr>
       <a href="${keys.BASE_URL}">Remember it!</a>
     `

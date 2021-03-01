@@ -1,4 +1,5 @@
 const {Router} = require('express');
+const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const User = require('../models/user');
@@ -15,7 +16,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-router.post('/', jsonParser, (req, res) => {
+router.put('/', jsonParser, (req, res) => {
   try {
     crypto.randomBytes(32, async (err, buffer) => {
       if (err) {
@@ -40,6 +41,59 @@ router.post('/', jsonParser, (req, res) => {
         });
       }
     });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.get('/:token', async (req, res) => {
+  if (!req.params.token) {
+    return res.redirect('/');
+  }
+
+  try {
+    const user = await User.findOne({
+      resetToken: req.params.token,
+      resetTokenExp: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      return res.render('resetPassword', {
+        error: 'Ссылка недействительная или некорректная'
+      });
+    } else {
+      res.render('resetPassword', {
+        userId: user._id.toString(),
+        token: req.params.token
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.put('/set-new-password', jsonParser, async (req, res) => {
+  try {
+    const user = await User.findOne({
+      _id: req.body.userId,
+      resetToken: req.body.token,
+      resetTokenExp: { $gt: Date.now() }
+    });
+
+    if (user) {
+      user.password = await bcrypt.hash(req.body.password, 10);
+      user.resetToken = undefined;
+      user.resetTokenExp = undefined;
+      await user.save();
+      res.json({
+        status: 'success'
+      });
+    } else {
+      res.json({
+        status: 'error',
+        description: 'Ссылка недействительна либо пользователь не найден. Попробуйте выслать письмо сброса пароля ещё раз.'
+      });
+    }
   } catch (err) {
     console.log(err);
   }
