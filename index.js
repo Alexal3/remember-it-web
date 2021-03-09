@@ -10,6 +10,7 @@ const MongoStore = require('connect-mongodb-session')(session);
 const User = require('./models/user');
 const varMiddleware = require('./middleware/variables');
 const userMiddleware = require('./middleware/user');
+const error404Handler = require('./middleware/404');
 const keys = require('./keys');
 
 const indexRoutes = require('./routes/indexRouter');
@@ -86,6 +87,9 @@ app.use('/delete-forever-note', deleteForeverNoteRoutes);
 app.use('/restore-note', restoreNoteRoutes);
 app.use('/clear-bin', clearBinRoutes);
 app.use('/reset', resetPasswordRoutes);
+
+app.use(error404Handler);
+
 // app.use(session({
 //   secret: keys.SESSION_SECRET,
 //   saveUninitialized: false
@@ -95,10 +99,6 @@ app.use('/reset', resetPasswordRoutes);
 //   res.session.isAuthenticated = true;
 
 //   next();
-// });
-
-// app.use((req, res, next) => {
-//   res.status(404).send("Not Found");
 // });
 
 const PORT = process.env.PORT || 3000;
