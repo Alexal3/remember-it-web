@@ -1,42 +1,36 @@
 const {Router} = require('express');
 const path = require('path');
 const bcrypt = require('bcryptjs');
+const {validationResult} = require('express-validator');
 const User = require('../models/user');
 const redirectToNotesIfAuthenticated = require('../middleware/redirectToNotesIfAuthenticated');
+const {loginValidators} = require('../utils/loginValidators');
 const router = Router();
 const jsonParser = require('express').json();
 
-router.post('/', redirectToNotesIfAuthenticated, jsonParser, async (req, res) => {
+router.post('/', redirectToNotesIfAuthenticated, jsonParser, loginValidators, async (req, res) => {
   try {
-    const {email, password} = req.body;
-    const candidate = await User.findOne({ email });
+    const {email} = req.body;
+    const user = await User.findOne({ email });
 
-    if (candidate) {
-      const areSame = await bcrypt.compare(password, candidate.password);
-
-      if (areSame) {
-        req.session.user = candidate;
-        req.session.isAuthenticated = true;
-        req.session.save(err => {
-          if (err) {
-            throw err;
-          }
-          res.json({
-            status: 'success'
-          });
-        })
-      } else {
-        res.json({
-          status: 'error',
-          description: 'Неверный пароль'
-        });
-      }
-    } else {
-      res.json({
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.json({
         status: 'error',
-        description: 'Пользователь с таким email не найден'
+        description: errors.array()[0].msg
       });
     }
+    
+    req.session.user = user;
+    req.session.isAuthenticated = true;
+    req.session.save(err => {
+      if (err) {
+        throw err;
+      }
+      res.json({
+        status: 'success'
+      });
+    })
   } catch (err) {
     console.log(err);
   }

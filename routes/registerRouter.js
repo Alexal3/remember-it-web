@@ -6,7 +6,7 @@ const nodemailer = require('nodemailer');
 const User = require('../models/user');
 const redirectToNotesIfAuthenticated = require('../middleware/redirectToNotesIfAuthenticated');
 const regEmail = require('../emails/registration');
-const {registerValidators} = require('../utils/validators');
+const {registerValidators} = require('../utils/registerValidators');
 const router = Router();
 const jsonParser = require('express').json();
 
