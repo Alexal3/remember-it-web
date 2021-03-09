@@ -17,7 +17,8 @@ if (btnReg) {
       },
       body: JSON.stringify({
         email: document.querySelector('#reg_email').value,
-        password: document.querySelector('#reg_password').value
+        password: document.querySelector('#reg_password').value,
+        passwordConfirm: document.querySelector('#reg_password_confirm').value
       })
     })
     .then(res => res.json())

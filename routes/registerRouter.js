@@ -1,10 +1,12 @@
 const {Router} = require('express');
 const path = require('path');
 const bcrypt = require('bcryptjs');
+const {validationResult} = require('express-validator');
 const nodemailer = require('nodemailer');
 const User = require('../models/user');
 const redirectToNotesIfAuthenticated = require('../middleware/redirectToNotesIfAuthenticated');
 const regEmail = require('../emails/registration');
+const {registerValidators} = require('../utils/validators');
 const router = Router();
 const jsonParser = require('express').json();
 
@@ -17,39 +19,40 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-router.post('/', redirectToNotesIfAuthenticated, jsonParser, async (req, res) => {
+router.post('/', redirectToNotesIfAuthenticated, jsonParser, registerValidators, async (req, res) => {
   try {
-    const {email, password} = req.body;
-    const candidate = await User.findOne({ email });
+    const { email, password } = req.body;
 
-    if (candidate) {
-      res.json({
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.json({
         status: 'error',
-        description: 'Такой email уже занят'
-      });
-    } else {
-      const hashPassword = await bcrypt.hash(password, 10);
-
-      const user = new User({
-        email,
-        password: hashPassword,
-        notes: []
-      });
-      await user.save();
-
-      req.session.user = user;
-      req.session.isAuthenticated = true;
-
-      req.session.save(async err => {
-        if (err) {
-          throw err;
-        }
-        res.json({
-          status: 'success'
-        });
-        await transporter.sendMail(regEmail(email));
+        description: errors.array()[0].msg
       });
     }
+
+    const hashPassword = await bcrypt.hash(password, 10);
+
+    const user = new User({
+      email,
+      password: hashPassword,
+      notes: []
+    });
+    await user.save();
+
+    req.session.user = user;
+    req.session.isAuthenticated = true;
+
+    req.session.save(async err => {
+      if (err) {
+        throw err;
+      }
+      res.json({
+        status: 'success'
+      });
+      await transporter.sendMail(regEmail(email));
+    });
+    
   } catch (err) {
     console.log(err);
   }
