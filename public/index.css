@@ -61,11 +61,43 @@
   /* transition: none !important; */
 }
 
-.alert {
+.alert, .info {
   padding: 10px 10px;
   border-radius: 10px;
   text-align: center;
   margin: 10px 0;
   background: rgba(41, 98, 255, 1);
   color: white;
+}
+
+.bold-font {
+  font-weight: bold;
+}
+
+.color-red {
+  color: red;
+}
+
+.avatar {
+  border-radius: 50%;
+  width: 64px;
+  user-select: none;
+}
+
+.disabled {
+  user-select: none;
+}
+
+.input-field input[type=email] + label,
+.input-field input[type=password] + label,
+.input-field input[type=text] + label {
+  user-select: none;
+}
+
+.file-path {
+  user-select: none;
+}
+
+.progress-color {
+  background-color: #b2d2ea !important;
 }

@@ -30,6 +30,7 @@ const deleteForeverNoteRoutes = require('./routes/deleteForeverNoteRouter');
 const restoreNoteRoutes = require('./routes/restoreNoteRouter');
 const clearBinRoutes = require('./routes/clearBinRouter');
 const resetPasswordRoutes = require('./routes/resetPasswordRouter');
+const profileRoutes = require('./routes/profileRouter');
 
 const app = express();
 // hbs.create({
@@ -60,6 +61,7 @@ app.set('views', 'views');
 // });
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/avatars', express.static(path.join(__dirname, 'avatars')));
 app.use(express.urlencoded({extended: true}));
 app.use(session({
   secret: keys.SESSION_SECRET,
@@ -87,6 +89,7 @@ app.use('/delete-forever-note', deleteForeverNoteRoutes);
 app.use('/restore-note', restoreNoteRoutes);
 app.use('/clear-bin', clearBinRoutes);
 app.use('/reset', resetPasswordRoutes);
+app.use('/profile', profileRoutes);
 
 app.use(error404Handler);
 

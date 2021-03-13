@@ -11,6 +11,10 @@ const user = new Schema({
   },
   resetToken: String,
   resetTokenExp: Date,
+  changeEmailToken: String,
+  changeEmailTokenExp: Date,
+  newEmail: String,
+  avatarURL: String,
   notes: [
     {
       noteId: {

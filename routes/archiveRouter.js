@@ -14,11 +14,19 @@ router.get('/', redirectToIndexIfNotAuthenticated, async (req, res) => {
       $natural: -1 
     });
   
-    res.render('archive', {
+    let locals = {
       layout: 'notes',
       isNotes: true,
-      notes: notes
-    });
+      notes: notes,
+      email: req.user.email,
+      userId: req.user._id
+    };
+
+    if (req.user.avatarURL) {
+      locals.avatarURL = req.user.avatarURL;
+    }
+
+    res.render('archive', locals);
   } catch (err) {
     console.log(err);
   }
