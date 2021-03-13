@@ -1,3 +1,4 @@
+const compression = require('compression');
 const express = require('express');
 const Handlebars = require('handlebars');
 const path = require('path');
@@ -71,6 +72,7 @@ app.use(session({
 }));
 app.use(csrf());
 app.disable("x-powered-by");
+app.use(compression());
 app.use(varMiddleware);
 app.use(userMiddleware);
 
