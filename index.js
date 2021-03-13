@@ -70,6 +70,7 @@ app.use(session({
   store
 }));
 app.use(csrf());
+app.disable("x-powered-by");
 app.use(varMiddleware);
 app.use(userMiddleware);
 
