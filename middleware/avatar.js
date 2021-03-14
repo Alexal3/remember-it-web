@@ -4,7 +4,7 @@ const path = require('path');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'avatars');
+    cb(null, 'tmp');
   },
   filename: function (req, file, cb) {
     cb(null, `${uuidv4()}${path.extname(file.originalname)}`);

@@ -16,6 +16,7 @@ const fs = require("fs");
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 const avatar = require('../middleware/avatar');
+const gm = require('gm');
 
 const transporter = nodemailer.createTransport({
   host: "smtp.ethereal.email",
@@ -26,7 +27,47 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-router.post('/new-avatar', redirectToIndexIfNotAuthenticated, /*jsonParser,*/ async (req, res) => {
+const setNewAvatar = async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (user.avatarURL) {
+    fs.unlink(user.avatarURL, async (err) => {
+      if (err) {
+        throw err;
+      }
+
+      user.avatarURL = `avatars\\${req.file.filename}`;
+      await user.save();
+
+      res.json({
+        status: 'success',
+        avatarURL: `avatars\\${req.file.filename}`
+      });
+
+      fs.unlink(`tmp\\${req.file.filename}`, async (err) => {
+        if (err) {
+          throw err;
+        }
+      });
+    });
+  } else {
+    user.avatarURL = `avatars\\${req.file.filename}`;
+    await user.save();
+
+    res.json({
+      status: 'success',
+      avatarURL: `avatars\\${req.file.filename}`
+    });
+
+    fs.unlink(`tmp\\${req.file.filename}`, async (err) => {
+      if (err) {
+        throw err;
+      }
+    });
+  }
+}
+
+router.post('/new-avatar', redirectToIndexIfNotAuthenticated, async (req, res) => {
   try {
     let upload = avatar.single('avatar');
 
@@ -56,31 +97,55 @@ router.post('/new-avatar', redirectToIndexIfNotAuthenticated, /*jsonParser,*/ as
         });
       }
 
-      const user = await User.findById(req.user._id);
+      gm(req.file.path).size((err, value) => {
+        if (err) {
+          throw err;
+        }
 
-      if (user.avatarURL) {
-        fs.unlink(user.avatarURL, async (err) => {
-          if (err) {
-            throw err;
-          }
-    
-          user.avatarURL = req.file.path;
-          await user.save();
-    
-          res.json({
-            status: 'success',
-            avatarURL: req.file.path
-          });
-        });
-      } else {
-        user.avatarURL = req.file.path;
-        await user.save();
-  
-        res.json({
-          status: 'success',
-          avatarURL: req.file.path
-        });
-      }
+        let width = value.width;
+        let height = value.height;
+
+        if (width === height) {
+          gm(req.file.path)
+            .autoOrient()
+            .resize(64, 64)
+            .noProfile()
+            .write(`avatars\\${req.file.filename}`, (err) => {
+              if (err) {
+                throw err;
+              }
+              setNewAvatar(req, res);
+            });
+        } else if (width > height) {
+          const croppedSegmentOnSides = Math.round( (width - height) / 2 );
+
+          gm(req.file.path)
+            .crop(height, height, croppedSegmentOnSides, 0)
+            .autoOrient()
+            .resize(64, 64)
+            .noProfile()
+            .write(`avatars\\${req.file.filename}`, (err) => {
+              if (err) {
+                throw err;
+              }
+              setNewAvatar(req, res);
+            });
+        } else if (width < height) {
+          const croppedSegmentAboveAndBelow = Math.round( (height - width) / 2 );
+
+          gm(req.file.path)
+            .crop(width, width, 0, croppedSegmentAboveAndBelow)
+            .autoOrient()
+            .resize(64, 64)
+            .noProfile()
+            .write(`avatars\\${req.file.filename}`, (err) => {
+              if (err) {
+                throw err;
+              }
+              setNewAvatar(req, res);
+            });
+        }
+      });
     });
   } catch (err) {
     console.log(err);
