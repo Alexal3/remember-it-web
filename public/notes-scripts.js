@@ -118,6 +118,11 @@ if ($createNotePanel) {
         `);
 
         let $note = document.querySelector(`#card-id-${note.id}`);
+
+        if (note.title === '' && note.body === '') {
+          $note.querySelector('.empty_note_text').classList.remove('hide');
+        }
+
         $note.addEventListener('click', (event) => {
           handleClickOnNote(event, $note);
         });
