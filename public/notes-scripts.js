@@ -140,7 +140,10 @@ if ($clearBinPanel) {
         }
       })
       .then(() => {
-        document.querySelector('#notes-container').innerHTML = '';
+        document.querySelectorAll('.note').forEach((note) => {
+          note.remove();
+        });
+        if (!document.querySelector('.note')) document.querySelector('#card_with_title_bin_is_empty').classList.remove('hide');
       })
       .catch(err => alert(`Ошибка: ${err}`));
     }
@@ -211,6 +214,7 @@ function handleClickOnNote(event, note) {
     })
     .then(() => {
       note.remove();
+      if (!document.querySelector('.note')) document.querySelector('#card_with_title_create_first_note').classList.remove('hide');
     })
     .catch(err => alert(`Ошибка: ${err}`));
   }
@@ -228,6 +232,7 @@ function handleClickOnNote(event, note) {
     })
     .then(() => {
       note.remove();
+      if (!document.querySelector('.note')) document.querySelector('#card_with_title_archive_is_empty').classList.remove('hide');
     })
     .catch(err => alert(`Ошибка: ${err}`));
   }
@@ -245,6 +250,12 @@ function handleClickOnNote(event, note) {
     })
     .then(() => {
       note.remove();
+      if (!document.querySelector('.note')) {
+        let cardWithTitleArchiveIsEmpty = document.querySelector('#card_with_title_archive_is_empty');
+        if (cardWithTitleArchiveIsEmpty) cardWithTitleArchiveIsEmpty.classList.remove('hide');
+        let cardWithTitleCreateFirstNote = document.querySelector('#card_with_title_create_first_note');
+        if (cardWithTitleCreateFirstNote) cardWithTitleCreateFirstNote.classList.remove('hide');
+      }
     })
     .catch(err => alert(`Ошибка: ${err}`));
   }
@@ -262,6 +273,7 @@ function handleClickOnNote(event, note) {
     })
     .then(() => {
       note.remove();
+      if (!document.querySelector('.note')) document.querySelector('#card_with_title_bin_is_empty').classList.remove('hide');
     })
     .catch(err => alert(`Ошибка: ${err}`));
   }
@@ -279,6 +291,7 @@ function handleClickOnNote(event, note) {
     })
     .then(() => {
       note.remove();
+      if (!document.querySelector('.note')) document.querySelector('#card_with_title_bin_is_empty').classList.remove('hide');
     })
     .catch(err => alert(`Ошибка: ${err}`));
   }

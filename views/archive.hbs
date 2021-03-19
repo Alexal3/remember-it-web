@@ -30,8 +30,11 @@
         </div>
       </div>
     {{/each}}
+    <div class="col s12 l6 offset-l3 hide" id="card_with_title_archive_is_empty">
+      <div class="card-panel center-align">Архив пока пуст</div>
+    </div>
   {{else}}
-    <div class="col s12 l6 offset-l3">
+    <div class="col s12 l6 offset-l3" id="card_with_title_archive_is_empty">
       <div class="card-panel center-align">Архив пока пуст</div>
     </div>
   {{/if}}
