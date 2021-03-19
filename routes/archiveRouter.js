@@ -6,20 +6,22 @@ const router = Router();
 
 router.get('/', redirectToIndexIfNotAuthenticated, async (req, res) => {
   try {
-    const notes = await Note.find({
-      userId: req.user._id,
-      archived: true,
-      deleted: false
-    }).sort({ 
-      $natural: -1 
-    });
+    const notes = await Note.findAll({
+      where: {
+        userId: req.user.id,
+        archived: true,
+        deleted: false
+      }
+    })
+    
+    notes.sort((a, b) => b - a);
   
     let locals = {
       layout: 'notes',
       isNotes: true,
-      notes: notes,
+      notes,
       email: req.user.email,
-      userId: req.user._id
+      userId: req.user.id
     };
 
     if (req.user.avatarURL) {

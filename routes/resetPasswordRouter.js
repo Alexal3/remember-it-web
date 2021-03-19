@@ -6,6 +6,7 @@ const User = require('../models/user');
 const resetEmail = require('../emails/resetPassword');
 const router = Router();
 const jsonParser = require('express').json();
+const {Op} = require("sequelize");
 
 const transporter = nodemailer.createTransport({
   host: "smtp.ethereal.email",
@@ -24,12 +25,22 @@ router.put('/', jsonParser, (req, res) => {
       }
 
       const token = buffer.toString('hex');
-      const candidate = await User.findOne({ email: req.body.email });
+      const candidate = await User.findOne({
+        where: { 
+          email: req.body.email 
+        }
+      });
 
       if (candidate) {
-        candidate.resetToken = token;
-        candidate.resetTokenExp = Date.now() + 60 * 60 * 1000;
-        await candidate.save();
+        User.update({
+          resetToken: token,
+          resetTokenExp: Date.now() + 60 * 60 * 1000
+        }, {
+          where: {
+            email: req.body.email
+          }
+        });
+
         await transporter.sendMail(resetEmail(candidate.email, token));
         res.json({
           status: 'success'
@@ -53,8 +64,12 @@ router.get('/:token', async (req, res) => {
 
   try {
     const user = await User.findOne({
-      resetToken: req.params.token,
-      resetTokenExp: { $gt: Date.now() }
+      where: {
+        resetToken: req.params.token,
+        resetTokenExp: {
+          [Op.gt]: Date.now()
+        }
+      }
     });
 
     if (!user) {
@@ -63,7 +78,7 @@ router.get('/:token', async (req, res) => {
       });
     } else {
       res.render('resetPassword', {
-        userId: user._id.toString(),
+        userId: user.id,
         token: req.params.token
       });
     }
@@ -75,16 +90,32 @@ router.get('/:token', async (req, res) => {
 router.put('/set-new-password', jsonParser, async (req, res) => {
   try {
     const user = await User.findOne({
-      _id: req.body.userId,
-      resetToken: req.body.token,
-      resetTokenExp: { $gt: Date.now() }
+      where: {
+        id: req.body.userId,
+        resetToken: req.body.token,
+        resetTokenExp: {
+          [Op.gt]: Date.now()
+        }
+      }
     });
 
     if (user) {
-      user.password = await bcrypt.hash(req.body.password, 10);
-      user.resetToken = undefined;
-      user.resetTokenExp = undefined;
-      await user.save();
+      const password = await bcrypt.hash(req.body.password, 10);
+
+      User.update({
+        password,
+        resetToken: null,
+        resetTokenExp: null
+      }, {
+        where: {
+          id: req.body.userId,
+          resetToken: req.body.token,
+          resetTokenExp: {
+            [Op.gt]: Date.now()
+          }
+        }
+      });
+
       res.json({
         status: 'success'
       });

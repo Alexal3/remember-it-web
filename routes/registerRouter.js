@@ -33,12 +33,10 @@ router.post('/', redirectToNotesIfAuthenticated, jsonParser, registerValidators,
 
     const hashPassword = await bcrypt.hash(password, 10);
 
-    const user = new User({
+    const user = await User.create({
       email,
       password: hashPassword,
-      notes: []
     });
-    await user.save();
 
     req.session.user = user;
     req.session.isAuthenticated = true;
@@ -52,7 +50,6 @@ router.post('/', redirectToNotesIfAuthenticated, jsonParser, registerValidators,
       });
       await transporter.sendMail(regEmail(email));
     });
-    
   } catch (err) {
     console.log(err);
   }

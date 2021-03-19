@@ -17,6 +17,7 @@ const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 const avatar = require('../middleware/avatar');
 const gm = require('gm');
+const {Op} = require("sequelize");
 
 const transporter = nodemailer.createTransport({
   host: "smtp.ethereal.email",
@@ -28,7 +29,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const setNewAvatar = async (req, res) => {
-  const user = await User.findById(req.user._id);
+  const user = await User.findByPk(req.user.id);
 
   if (user.avatarURL) {
     fs.unlink(user.avatarURL, async (err) => {
@@ -36,8 +37,11 @@ const setNewAvatar = async (req, res) => {
         throw err;
       }
 
-      user.avatarURL = `avatars\\${req.file.filename}`;
-      await user.save();
+      User.update({ avatarURL: `avatars\\${req.file.filename}` }, {
+        where: {
+          id: req.user.id
+        }
+      });
 
       res.json({
         status: 'success',
@@ -51,8 +55,11 @@ const setNewAvatar = async (req, res) => {
       });
     });
   } else {
-    user.avatarURL = `avatars\\${req.file.filename}`;
-    await user.save();
+    User.update({ avatarURL: `avatars\\${req.file.filename}` }, {
+      where: {
+        id: req.user.id
+      }
+    });
 
     res.json({
       status: 'success',
@@ -154,15 +161,18 @@ router.post('/new-avatar', redirectToIndexIfNotAuthenticated, async (req, res) =
 
 router.delete('/delete-avatar', redirectToIndexIfNotAuthenticated, jsonParser, async (req, res) => {
   try {
-    const user = await User.findById(req.body.userId);
+    const user = await User.findByPk(req.user.id);
     
     fs.unlink(user.avatarURL, async (err) => {
       if (err) {
         throw err;
       }
       
-      user.avatarURL = undefined;
-      await user.save();
+      User.update({ avatarURL: null }, {
+        where: {
+          id: req.user.id
+        }
+      })
 
       res.json({
         status: 'success'
@@ -189,7 +199,7 @@ router.post('/new-email', redirectToIndexIfNotAuthenticated, jsonParser, profile
       }
 
       const token = buffer.toString('hex');
-      const candidate = await User.findById(req.body.userId);
+      const candidate = await User.findByPk(req.user.id);
 
       if (!candidate) {
         res.json({
@@ -198,10 +208,16 @@ router.post('/new-email', redirectToIndexIfNotAuthenticated, jsonParser, profile
         });
       }
 
-      candidate.changeEmailToken = token;
-      candidate.changeEmailTokenExp = Date.now() + 60 * 60 * 1000;
-      candidate.newEmail = req.body.email;
-      await candidate.save();
+      User.update({
+        changeEmailToken: token,
+        changeEmailTokenExp: Date.now() + 60 * 60 * 1000,
+        newEmail: req.body.email
+      }, {
+        where: {
+          id: req.user.id
+        }
+      })
+
       await transporter.sendMail(changeEmail(req.body.email, candidate.email, token));
       res.json({
         status: 'success'
@@ -213,14 +229,18 @@ router.post('/new-email', redirectToIndexIfNotAuthenticated, jsonParser, profile
 });
 
 router.get('/new-email/:token', async (req, res) => {
-  if (!req.params.token) {
-    return res.redirect('/');
-  }
-
   try {
+    if (!req.params.token) {
+      return res.redirect('/');
+    }
+
     const user = await User.findOne({
-      changeEmailToken: req.params.token,
-      changeEmailTokenExp: { $gt: Date.now() }
+      where: {
+        changeEmailToken: req.params.token,
+        changeEmailTokenExp: {
+          [Op.gt]: Date.now()
+        }
+      }
     });
 
     if (!user) {
@@ -229,11 +249,16 @@ router.get('/new-email/:token', async (req, res) => {
       });
     }
 
-    user.email = user.newEmail;
-    user.changeEmailToken = undefined;
-    user.changeEmailTokenExp = undefined;
-    user.newEmail = undefined;
-    await user.save();
+    await User.update({ 
+      email: user.newEmail,
+      changeEmailToken: null,
+      changeEmailTokenExp: null,
+      newEmail: null,
+     }, {
+      where: {
+        id: req.user.id
+      }
+    });
 
     res.render('changeEmail', {
       success: 'Имейл успешно изменен'
@@ -253,9 +278,13 @@ router.post('/new-password', redirectToIndexIfNotAuthenticated, jsonParser, prof
       });
     }
 
-    const user = await User.findById(req.body.userId);
-    user.password = await bcrypt.hash(req.body.newPassword, 10);
-    await user.save();
+    const password = await bcrypt.hash(req.body.newPassword, 10);
+
+    User.update({ password }, {
+      where: {
+        id: req.user.id
+      }
+    });
 
     res.json({
       status: 'success'

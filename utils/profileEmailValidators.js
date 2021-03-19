@@ -17,7 +17,7 @@ exports.profileEmailValidators = [
     .withMessage('Некорректный email')
     .custom(async (value, {req}) => {
       try {
-        const user = await User.findById(req.body.userId);
+        const user = await User.findByPk(req.user.id);
         if (user.email === value) {
           return Promise.reject('Вы уже используете такой email');
         }
@@ -28,7 +28,9 @@ exports.profileEmailValidators = [
     .custom(async (value, {req}) => {
       try {
         const user = await User.findOne({
-          email: value
+          where: {
+            email: value
+          }
         });
         if (user) {
           return Promise.reject('Такой email уже занят');

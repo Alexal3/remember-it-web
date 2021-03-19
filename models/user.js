@@ -1,82 +1,41 @@
-const {Schema, model} = require('mongoose');
+const Sequelize = require('sequelize');
+const sequelize = require('../utils/database');
+const note = require('./note');
 
-const user = new Schema({
+const user = sequelize.define('user', {
   email: {
-    type: String,
-    required: true
+    type: Sequelize.STRING,
+    allowNull: false
   },
   password: {
-    type: String,
-    required: true
+    type: Sequelize.STRING,
+    allowNull: false
   },
-  resetToken: String,
-  resetTokenExp: Date,
-  changeEmailToken: String,
-  changeEmailTokenExp: Date,
-  newEmail: String,
-  avatarURL: String,
-  notes: [
-    {
-      noteId: {
-        type: Schema.Types.ObjectId,
-        ref: 'Note',
-        required: true
-      }
-    }
-  ]
+  resetToken: {
+    type: Sequelize.STRING,
+    allowNull: true
+  },
+  resetTokenExp: {
+    type: Sequelize.DATE,
+    allowNull: true
+  },
+  changeEmailToken: {
+    type: Sequelize.STRING,
+    allowNull: true
+  },
+  changeEmailTokenExp: {
+    type: Sequelize.DATE,
+    allowNull: true
+  },
+  newEmail: {
+    type: Sequelize.STRING,
+    allowNull: true
+  },
+  avatarURL: {
+    type: Sequelize.STRING,
+    allowNull: true
+  }
 });
 
-module.exports = model('User', user);
-
-// const uuid = require('uuid');
-// const fs = require('fs');
-// const path = require('path');
-
-// class User {
-//   constructor (email, password) {
-//     this.email = email;
-//     this.password = password;
-//     this.id = uuid.v4();
-//   }
-
-//   async register() {
-//     const users = await User.getAll();
-//     users.push({
-//       email: this.email,
-//       password: this.password,
-//       id: this.id
-//     });
-
-//     return new Promise((resovle, reject) => {
-//       fs.writeFile(
-//         path.join(__dirname, '..', 'data', 'users.json'),
-//         JSON.stringify(users),
-//         (err) => {
-//           if (err) {
-//             reject(err);
-//           } else {
-//             resovle();
-//           }
-//         }
-//       );
-//     });
-//   }
-
-//   static getAll() {
-//     return new Promise((resovle, reject) => {
-//       fs.readFile(
-//         path.join(__dirname, '..', 'data', 'users.json'),
-//         'utf-8',
-//         (err, content) => {
-//           if (err) {
-//             reject(err);
-//           } else {
-//             resovle(JSON.parse(content));
-//           }
-//         }
-//       );
-//     });
-//   }
-// }
-
-// module.exports = User;
+user.hasMany(note, { onDelete: "cascade" });
+module.exports = user;

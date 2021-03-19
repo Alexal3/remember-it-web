@@ -7,12 +7,15 @@ const jsonParser = require('express').json();
 
 router.put('/', redirectToIndexIfNotAuthenticated, jsonParser, async (req, res) => {
   try {
-    const note = await Note.findById(req.body.id);
-    if (note.userId.toString() !== req.user._id.toString()) {
-      return res.end();
-    }
-    note.deleted = true;
-    await note.save();
+    await Note.update({
+      deleted: true
+    }, {
+      where: {
+        id: req.body.id,
+        userId: req.user.id
+      }
+    })
+
     res.end();
   } catch (err) {
     console.log(err);

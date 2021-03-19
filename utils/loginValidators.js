@@ -7,7 +7,11 @@ exports.loginValidators = [
   body('email')
     .custom(async (value, {req}) => {
       try {
-        user = await User.findOne({ email: value });
+        user = await User.findOne({
+          where: {
+            email: value
+          }  
+        });
         if (!user) {
           return Promise.reject('Пользователь с таким email не найден');
         }

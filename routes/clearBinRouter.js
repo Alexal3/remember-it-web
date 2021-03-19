@@ -6,10 +6,13 @@ const router = Router();
 
 router.delete('/', redirectToIndexIfNotAuthenticated, async (req, res) => {
   try {
-    await Note.deleteMany({
-      userId: req.user._id,
-      deleted: true
+    await Note.destroy({
+      where: {
+        userId: req.user.id,
+        deleted: true
+      }
     });
+
     res.end();
   } catch (err) {
     console.log(err);

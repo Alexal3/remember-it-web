@@ -7,7 +7,7 @@ exports.profilePasswordValidators = [
   body('userId')
     .custom(async (value, {req}) => {
       try {
-        user = await User.findById(value);
+        user = await User.findByPk(value);
         if (!user) {
           return Promise.reject('Пользователь с таким ID не найден');
         }

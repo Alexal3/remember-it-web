@@ -2,12 +2,12 @@ const compression = require('compression');
 const express = require('express');
 const Handlebars = require('handlebars');
 const path = require('path');
+const sequelize = require('./utils/database');
 const csrf = require('csurf');
-const mongoose = require('mongoose');
 const exphbs = require('express-handlebars');
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
 const session = require('express-session');
-const MongoStore = require('connect-mongodb-session')(session);
+const MySQLStore = require('express-mysql-session')(session);
 const User = require('./models/user');
 const varMiddleware = require('./middleware/variables');
 const userMiddleware = require('./middleware/user');
@@ -42,9 +42,13 @@ const hbs = exphbs.create({
   extname: 'hbs',
   handlebars: allowInsecurePrototypeAccess(Handlebars)
 });
-const store = new MongoStore({
-  collection: 'sessions',
-  uri: keys.MONGODB_URI
+
+const sessionStore = new MySQLStore({
+  host: keys.DB_HOST,
+	port: keys.DB_PORT,
+	user: keys.DB_USER_NAME,
+	password: keys.DB_PASSWORD,
+	database: keys.DB_NAME
 });
 
 app.engine('hbs', hbs.engine);
@@ -68,7 +72,7 @@ app.use(session({
   secret: keys.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
-  store
+  store: sessionStore
 }));
 app.use(csrf());
 app.disable("x-powered-by");
@@ -96,11 +100,6 @@ app.use('/profile', profileRoutes);
 
 app.use(error404Handler);
 
-// app.use(session({
-//   secret: keys.SESSION_SECRET,
-//   saveUninitialized: false
-// }));
-
 // app.use((req, res, next) => {
 //   res.session.isAuthenticated = true;
 
@@ -111,11 +110,7 @@ const PORT = process.env.PORT || 3000;
 
 async function start() {
   try {
-    await mongoose.connect(keys.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false
-    });
+    await sequelize.sync();
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });

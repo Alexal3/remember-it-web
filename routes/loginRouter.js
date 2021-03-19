@@ -11,7 +11,11 @@ const jsonParser = require('express').json();
 router.post('/', redirectToNotesIfAuthenticated, jsonParser, loginValidators, async (req, res) => {
   try {
     const {email} = req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({
+      where: {
+        email
+      }
+    });
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -23,6 +27,7 @@ router.post('/', redirectToNotesIfAuthenticated, jsonParser, loginValidators, as
     
     req.session.user = user;
     req.session.isAuthenticated = true;
+
     req.session.save(err => {
       if (err) {
         throw err;

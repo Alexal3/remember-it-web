@@ -5,6 +5,6 @@ module.exports = async function(req, res, next) {
     return next();
   }
 
-  req.user = await User.findById(req.session.user._id);
+  req.user = await User.findByPk(req.session.user.id);
   next();
 }
