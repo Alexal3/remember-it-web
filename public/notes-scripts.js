@@ -81,6 +81,13 @@ if ($createNotePanel) {
       })
       .then(res => res.json())
       .then(note => {
+        let cardWithTitleCreateFirstNote = document.querySelector('#card_with_title_create_first_note');
+        if (cardWithTitleCreateFirstNote) cardWithTitleCreateFirstNote.classList.add('hide');
+        document.querySelector('#create_note_title').value = '';
+        document.querySelector('#create_note_title + label').classList.remove('active');
+        document.querySelector('#create_note').value = '';
+        document.querySelector('#create_note + label').classList.remove('active');
+
         document.querySelector('#notes-container').insertAdjacentHTML('afterbegin', `
           <div class="col xl6">
             <div class="note card hoverable" id="card-id-${note.id}">
@@ -109,6 +116,11 @@ if ($createNotePanel) {
             </div>
           </div>
         `);
+
+        let $note = document.querySelector(`#card-id-${note.id}`);
+        $note.addEventListener('click', (event) => {
+          handleClickOnNote(event, $note);
+        });
       })
       .catch(err => alert(`Ошибка: ${err}`));
     }
@@ -139,131 +151,135 @@ const notes = document.querySelectorAll('.note');
 
 if (notes) {
   for (const note of notes) {
-    note.addEventListener('click', event => {
-      if (event.target.closest('.btn-done')) {
-        fetch('/change-note', {
-          method: 'put',
-          headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-            'CSRF-Token': token
-          },
-          body: JSON.stringify({
-            id: note.querySelector('input[name="id"]').value,
-            title: note.querySelector('input[name="title"]').value,
-            body: note.querySelector('textarea[name="body"]').value
-          })
-        })
-        .then(() => {
-          note.querySelector('.card-content .card-title').textContent = note.querySelector('input[name="title"]').value;
-          note.querySelector('.card-content p').textContent = note.querySelector('textarea[name="body"]').value;
-          note.querySelector('.card-content .card-title').classList.remove('hide');
-          note.querySelector('.card-content p').classList.remove('hide');
-
-          if (note.querySelector('input[name="title"]').value === '' && note.querySelector('textarea[name="body"]').value === '') {
-            note.querySelector('.card-content .empty_note_text').classList.remove('hide');
-          }
-        
-          if (note.querySelector('input[name="title"]').value !== '' && note.querySelector('textarea[name="body"]').value !== '') {
-            note.querySelector('.card-content .empty_note_text').classList.add('hide');
-          }
-        
-          note.querySelector('input[name="title"]').value = '';
-          note.querySelector('textarea[name="body"]').value = '';
-          note.querySelectorAll('.card-content .input-field')[0].classList.add('hide');
-          note.querySelectorAll('.card-content .input-field')[1].classList.add('hide');
-        
-          note.querySelector('.btn-edit').classList.remove('hide');
-          note.querySelector('.btn-done').classList.add('hide');
-          note.querySelector('.btn-cancel').classList.add('hide');
-
-        })
-        .catch(err => alert(`Ошибка: ${err}`));
-      }
-
-      if (event.target.closest('.btn-archive')) {
-        fetch('/archive-note', {
-          method: 'put',
-          headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-            'CSRF-Token': token
-          },
-          body: JSON.stringify({
-            id: note.querySelector('input[name="id"]').value
-          })
-        })
-        .then(() => {
-          note.remove();
-        })
-        .catch(err => alert(`Ошибка: ${err}`));
-      }
-
-      if (event.target.closest('.btn-unarchive')) {
-        fetch('/unarchive-note', {
-          method: 'put',
-          headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-            'CSRF-Token': token
-          },
-          body: JSON.stringify({
-            id: note.querySelector('input[name="id"]').value
-          })
-        })
-        .then(() => {
-          note.remove();
-        })
-        .catch(err => alert(`Ошибка: ${err}`));
-      }
-
-      if (event.target.closest('.btn-delete')) {
-        fetch('/delete-note', {
-          method: 'put',
-          headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-            'CSRF-Token': token
-          },
-          body: JSON.stringify({
-            id: note.querySelector('input[name="id"]').value
-          })
-        })
-        .then(() => {
-          note.remove();
-        })
-        .catch(err => alert(`Ошибка: ${err}`));
-      }
-
-      if (event.target.closest('.btn-delete-forever')) {
-        fetch('/delete-forever-note', {
-          method: 'delete',
-          headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-            'CSRF-Token': token
-          },
-          body: JSON.stringify({
-            id: note.querySelector('input[name="id"]').value
-          })
-        })
-        .then(() => {
-          note.remove();
-        })
-        .catch(err => alert(`Ошибка: ${err}`));
-      }
-
-      if (event.target.closest('.btn-restore')) {
-        fetch('/restore-note', {
-          method: 'put',
-          headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-            'CSRF-Token': token
-          },
-          body: JSON.stringify({
-            id: note.querySelector('input[name="id"]').value
-          })
-        })
-        .then(() => {
-          note.remove();
-        })
-        .catch(err => alert(`Ошибка: ${err}`));
-      }
+    note.addEventListener('click', (event) => {
+      handleClickOnNote(event, note);
     });
+  }
+}
+
+function handleClickOnNote(event, note) {
+  if (event.target.closest('.btn-done')) {
+    fetch('/change-note', {
+      method: 'put',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        'CSRF-Token': token
+      },
+      body: JSON.stringify({
+        id: note.querySelector('input[name="id"]').value,
+        title: note.querySelector('input[name="title"]').value,
+        body: note.querySelector('textarea[name="body"]').value
+      })
+    })
+    .then(() => {
+      note.querySelector('.card-content .card-title').textContent = note.querySelector('input[name="title"]').value;
+      note.querySelector('.card-content p').textContent = note.querySelector('textarea[name="body"]').value;
+      note.querySelector('.card-content .card-title').classList.remove('hide');
+      note.querySelector('.card-content p').classList.remove('hide');
+
+      if (note.querySelector('input[name="title"]').value === '' && note.querySelector('textarea[name="body"]').value === '') {
+        note.querySelector('.card-content .empty_note_text').classList.remove('hide');
+      }
+    
+      if (note.querySelector('input[name="title"]').value !== '' && note.querySelector('textarea[name="body"]').value !== '') {
+        note.querySelector('.card-content .empty_note_text').classList.add('hide');
+      }
+    
+      note.querySelector('input[name="title"]').value = '';
+      note.querySelector('textarea[name="body"]').value = '';
+      note.querySelectorAll('.card-content .input-field')[0].classList.add('hide');
+      note.querySelectorAll('.card-content .input-field')[1].classList.add('hide');
+    
+      note.querySelector('.btn-edit').classList.remove('hide');
+      note.querySelector('.btn-done').classList.add('hide');
+      note.querySelector('.btn-cancel').classList.add('hide');
+
+    })
+    .catch(err => alert(`Ошибка: ${err}`));
+  }
+
+  if (event.target.closest('.btn-archive')) {
+    fetch('/archive-note', {
+      method: 'put',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        'CSRF-Token': token
+      },
+      body: JSON.stringify({
+        id: note.querySelector('input[name="id"]').value
+      })
+    })
+    .then(() => {
+      note.remove();
+    })
+    .catch(err => alert(`Ошибка: ${err}`));
+  }
+
+  if (event.target.closest('.btn-unarchive')) {
+    fetch('/unarchive-note', {
+      method: 'put',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        'CSRF-Token': token
+      },
+      body: JSON.stringify({
+        id: note.querySelector('input[name="id"]').value
+      })
+    })
+    .then(() => {
+      note.remove();
+    })
+    .catch(err => alert(`Ошибка: ${err}`));
+  }
+
+  if (event.target.closest('.btn-delete')) {
+    fetch('/delete-note', {
+      method: 'put',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        'CSRF-Token': token
+      },
+      body: JSON.stringify({
+        id: note.querySelector('input[name="id"]').value
+      })
+    })
+    .then(() => {
+      note.remove();
+    })
+    .catch(err => alert(`Ошибка: ${err}`));
+  }
+
+  if (event.target.closest('.btn-delete-forever')) {
+    fetch('/delete-forever-note', {
+      method: 'delete',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        'CSRF-Token': token
+      },
+      body: JSON.stringify({
+        id: note.querySelector('input[name="id"]').value
+      })
+    })
+    .then(() => {
+      note.remove();
+    })
+    .catch(err => alert(`Ошибка: ${err}`));
+  }
+
+  if (event.target.closest('.btn-restore')) {
+    fetch('/restore-note', {
+      method: 'put',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        'CSRF-Token': token
+      },
+      body: JSON.stringify({
+        id: note.querySelector('input[name="id"]').value
+      })
+    })
+    .then(() => {
+      note.remove();
+    })
+    .catch(err => alert(`Ошибка: ${err}`));
   }
 }
