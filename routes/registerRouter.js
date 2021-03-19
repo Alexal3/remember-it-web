@@ -1,5 +1,4 @@
 const {Router} = require('express');
-const path = require('path');
 const bcrypt = require('bcryptjs');
 const {validationResult} = require('express-validator');
 const nodemailer = require('nodemailer');

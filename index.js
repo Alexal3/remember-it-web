@@ -8,7 +8,6 @@ const exphbs = require('express-handlebars');
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
-const User = require('./models/user');
 const varMiddleware = require('./middleware/variables');
 const userMiddleware = require('./middleware/user');
 const error404Handler = require('./middleware/404');
@@ -34,9 +33,6 @@ const resetPasswordRoutes = require('./routes/resetPasswordRouter');
 const profileRoutes = require('./routes/profileRouter');
 
 const app = express();
-// hbs.create({
-//   extname: 'hbs'
-// });
 const hbs = exphbs.create({
   defaultLayout: 'main',
   extname: 'hbs',
@@ -54,16 +50,6 @@ const sessionStore = new MySQLStore({
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.set('views', 'views');
-
-// app.use(async (req, res, next) => {
-//   try {
-//     const user = await User.findById('602d213d4870cd3b1cd88f03');
-//     req.user = user;
-//     next();
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/avatars', express.static(path.join(__dirname, 'avatars')));
@@ -99,12 +85,6 @@ app.use('/reset', resetPasswordRoutes);
 app.use('/profile', profileRoutes);
 
 app.use(error404Handler);
-
-// app.use((req, res, next) => {
-//   res.session.isAuthenticated = true;
-
-//   next();
-// });
 
 const PORT = process.env.PORT || 3000;
 

@@ -39,7 +39,6 @@
               <div class="input-field">
                 <textarea id="create_note" class="materialize-textarea"></textarea>
                 <label for="create_note">Не забыть сделать...</label>
-                <!-- <span class="helper-text" data-error="Это поле не может быть пустым"></span> -->
               </div>
             </div>
             <div class="card-action">
@@ -85,58 +84,54 @@
   </main>
 
   <div id="register-modal" class="modal">
-    {{!-- <form action="/register" method="post"> --}}
-      <div class="modal-content">
-        <div class="container">
-          <h4 class="center-align">Регистрация</h4>
-          <p>&nbsp;</p>
-          <div class="input-field">
-            <input id="reg_email" type="email" name="email" class="validate">
-            <label for="reg_email">Адрес эл. почты</label>
-          </div>
-          <div class="input-field">
-            <input id="reg_password" type="password" name="password" class="validate">
-            <label for="reg_password">Пароль</label>
-          </div>
-          <div class="input-field">
-            <input id="reg_password_confirm" type="password" name="passwordConfirm" class="validate">
-            <label for="reg_password_confirm">Подтвердите пароль</label>
-          </div>
-          <input type="hidden" name="_csrf" value="{{csrf}}">
+    <div class="modal-content">
+      <div class="container">
+        <h4 class="center-align">Регистрация</h4>
+        <p>&nbsp;</p>
+        <div class="input-field">
+          <input id="reg_email" type="email" name="email" class="validate">
+          <label for="reg_email">Адрес эл. почты</label>
         </div>
-      </div>
-      <div class="modal-footer">
-        <div class="container">
-          <button class="btn-reg modal-close waves-effect waves-light blue accent-2 btn">Готово!</button>
+        <div class="input-field">
+          <input id="reg_password" type="password" name="password" class="validate">
+          <label for="reg_password">Пароль</label>
         </div>
+        <div class="input-field">
+          <input id="reg_password_confirm" type="password" name="passwordConfirm" class="validate">
+          <label for="reg_password_confirm">Подтвердите пароль</label>
+        </div>
+        <input type="hidden" name="_csrf" value="{{csrf}}">
       </div>
-    {{!-- </form> --}}
+    </div>
+    <div class="modal-footer">
+      <div class="container">
+        <button class="btn-reg modal-close waves-effect waves-light blue accent-2 btn">Готово!</button>
+      </div>
+    </div>
   </div>
 
   <div id="login-modal" class="modal">
-    {{!-- <form action="/login" method="post"> --}}
-      <div class="modal-content">
-        <div class="container">
-          <h4 class="center-align">Вход</h4>
-          <p>&nbsp;</p>
-          <div class="input-field">
-            <input id="login_email" type="email" name="email" class="validate">
-            <label for="login_email">Адрес эл. почты</label>
-          </div>
-          <div class="input-field">
-            <input id="login_password" type="password" name="password" class="validate">
-            <label for="login_password">Пароль</label>
-          </div>
-          <input type="hidden" name="_csrf" value="{{csrf}}">
+    <div class="modal-content">
+      <div class="container">
+        <h4 class="center-align">Вход</h4>
+        <p>&nbsp;</p>
+        <div class="input-field">
+          <input id="login_email" type="email" name="email" class="validate">
+          <label for="login_email">Адрес эл. почты</label>
         </div>
-      </div>
-      <div class="modal-footer">
-        <div class="container">
-          <button class="btn-forgot-password waves-effect waves-light btn-flat modal-trigger" href="#forgot-password">Забыли пароль?</button>
-          <button class="btn-login modal-close waves-effect waves-light blue accent-2 btn">Готово!</button>
+        <div class="input-field">
+          <input id="login_password" type="password" name="password" class="validate">
+          <label for="login_password">Пароль</label>
         </div>
+        <input type="hidden" name="_csrf" value="{{csrf}}">
       </div>
-    {{!-- </form> --}}
+    </div>
+    <div class="modal-footer">
+      <div class="container">
+        <button class="btn-forgot-password waves-effect waves-light btn-flat modal-trigger" href="#forgot-password">Забыли пароль?</button>
+        <button class="btn-login modal-close waves-effect waves-light blue accent-2 btn">Готово!</button>
+      </div>
+    </div>
   </div>
 
   <div class="modal" id="forgot-password">

@@ -32,9 +32,9 @@ exports.registerValidators = [
     .withMessage(`Пароль должен содержать буквы в верхнем и нижнем регистре, цифры и подчёркивание '_'`),
   body('passwordConfirm')
     .custom((value, {req}) => {
-    if (value !== req.body.password) {
-      throw new Error('Пароли не совпадают');
-    }
-    return true;
-  })
+      if (value !== req.body.password) {
+        throw new Error('Пароли не совпадают');
+      }
+      return true;
+    })
 ];

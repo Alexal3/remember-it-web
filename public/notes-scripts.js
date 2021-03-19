@@ -267,7 +267,3 @@ if (notes) {
     });
   }
 }
-
-function handleClickOnNote(event) {
-  
-}

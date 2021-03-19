@@ -1,6 +1,4 @@
 const {Router} = require('express');
-const path = require('path');
-const bcrypt = require('bcryptjs');
 const {validationResult} = require('express-validator');
 const User = require('../models/user');
 const redirectToNotesIfAuthenticated = require('../middleware/redirectToNotesIfAuthenticated');

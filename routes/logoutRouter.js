@@ -1,6 +1,4 @@
 const {Router} = require('express');
-const path = require('path');
-const User = require('../models/user');
 const redirectToIndexIfNotAuthenticated = require('../middleware/redirectToIndexIfNotAuthenticated');
 const router = Router();
 
