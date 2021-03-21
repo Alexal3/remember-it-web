@@ -101,6 +101,7 @@ if ($createNotePanel) {
         document.querySelector('#create_note_title + label').classList.remove('active');
         document.querySelector('#create_note').value = '';
         document.querySelector('#create_note + label').classList.remove('active');
+        document.querySelector('#create_note').style.height = '45px';
 
         document.querySelector('#notes-container').insertAdjacentHTML('afterbegin', `
           <div class="col xl6">
