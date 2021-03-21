@@ -6,16 +6,23 @@ const jsonParser = require('express').json();
 
 router.post('/', redirectToIndexIfNotAuthenticated, jsonParser, async (req, res) => {
   try {
-    const note = await Note.create({
+    let note = await Note.create({
       title: req.body.title,
       body: req.body.body,
       archived: false,
       deleted: false,
       userId: req.user.id
     });
-
-    res.json(note);
+    
+    res.json({
+      status: 'success',
+      content: note
+    });
   } catch (err) {
+    res.json({
+      status: 'error',
+      description: err.original.code,
+    });
     console.log(err);
   }
 });

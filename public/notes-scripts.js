@@ -80,7 +80,21 @@ if ($createNotePanel) {
         })
       })
       .then(res => res.json())
-      .then(note => {
+      .then(result => {
+        if (result.status === 'error') {
+          switch (result.description) {
+            case 'ER_DATA_TOO_LONG':
+              throw new Error('Заголовок заметки или ее тело слишком длинные. Используйте не более 300 и 5000 символов соответственно.');
+              break;
+          
+            default:
+              throw new Error(result.description);
+              break;
+          }
+        }
+
+        let note = result.content;
+
         let cardWithTitleCreateFirstNote = document.querySelector('#card_with_title_create_first_note');
         if (cardWithTitleCreateFirstNote) cardWithTitleCreateFirstNote.classList.add('hide');
         document.querySelector('#create_note_title').value = '';
@@ -127,7 +141,7 @@ if ($createNotePanel) {
           handleClickOnNote(event, $note);
         });
       })
-      .catch(err => alert(`Ошибка: ${err}`));
+      .catch(err => alert(`Ошибка: ${err.message}`));
     }
   });
 }
