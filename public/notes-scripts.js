@@ -84,7 +84,7 @@ if ($createNotePanel) {
         if (result.status === 'error') {
           switch (result.description) {
             case 'ER_DATA_TOO_LONG':
-              throw new Error('Заголовок заметки или ее тело слишком длинные. Используйте не более 300 и 5000 символов соответственно.');
+              throw new Error('Заголовок заметки или ее тело слишком длинные. Используйте не более 100 и 800 символов соответственно.');
               break;
           
             default:
@@ -103,31 +103,29 @@ if ($createNotePanel) {
         document.querySelector('#create_note + label').classList.remove('active');
         document.querySelector('#create_note').style.height = '45px';
 
-        document.querySelector('#notes-container').insertAdjacentHTML('afterbegin', `
-          <div class="col xl6">
-            <div class="note card hoverable" id="card-id-${note.id}">
-              <div class="card-content">
-                <span class="card-title">${note.title}</span>
-                <p>${note.body}</p>
-                <input type="hidden" name="id" value="${note.id}">
-                <input type="hidden" name="page" value="notes">
-                <div class="input-field hide">
-                  <input name="title" id="note_title_edit_${note.id}" type="text" value="${note.title}">
-                  <label for="note_title_edit_${note.id}"></label>
-                </div>
-                <div class="input-field hide">
-                  <textarea name="body" id="note_content_edit_${note.id}" class="materialize-textarea">${note.body}</textarea>
-                  <label for="note_content_edit_${note.id}"></label>
-                </div>
-                <span class="empty_note_text grey-text hide">Пустая заметка</span>
+        document.querySelector('#notes-container .col').insertAdjacentHTML('afterbegin', `
+          <div class="note card hoverable" id="card-id-${note.id}">
+            <div class="card-content">
+              <span class="card-title">${note.title}</span>
+              <p>${note.body}</p>
+              <input type="hidden" name="id" value="${note.id}">
+              <input type="hidden" name="page" value="notes">
+              <div class="input-field hide">
+                <input name="title" id="note_title_edit_${note.id}" type="text" value="${note.title}">
+                <label for="note_title_edit_${note.id}"></label>
               </div>
-              <div class="card-action">
-                <button class="btn-done waves-effect btn-flat hide"><i class="material-icons blue-text text-accent-2">done</i></button>
-                <button type="button" class="btn-cancel waves-effect btn-flat hide" onclick="notesCancelEdit('${note.id}')"><i class="material-icons blue-text text-accent-2">cancel</i></button>
-                <button type="button" class="btn-edit waves-effect btn-flat" onclick="notesStartEdit('${note.id}')"><i class="material-icons blue-text text-accent-2">edit</i></button>
-                <button name="toArchive" value="true" class="btn-archive waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">archive</i></button>
-                <button name="toDelete" value="true" class="btn-delete waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">delete</i></button>
+              <div class="input-field hide">
+                <textarea name="body" id="note_content_edit_${note.id}" class="materialize-textarea">${note.body}</textarea>
+                <label for="note_content_edit_${note.id}"></label>
               </div>
+              <span class="empty_note_text grey-text hide">Пустая заметка</span>
+            </div>
+            <div class="card-action">
+              <button class="btn-done waves-effect btn-flat hide"><i class="material-icons blue-text text-accent-2">done</i></button>
+              <button type="button" class="btn-cancel waves-effect btn-flat hide" onclick="notesCancelEdit('${note.id}')"><i class="material-icons blue-text text-accent-2">cancel</i></button>
+              <button type="button" class="btn-edit waves-effect btn-flat" onclick="notesStartEdit('${note.id}')"><i class="material-icons blue-text text-accent-2">edit</i></button>
+              <button name="toArchive" value="true" class="btn-archive waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">archive</i></button>
+              <button name="toDelete" value="true" class="btn-delete waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">delete</i></button>
             </div>
           </div>
         `);

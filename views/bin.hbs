@@ -8,9 +8,10 @@
 </div>
 
 <div id="notes-container" class="row">
-  {{#if notes.length}}
-    {{#each notes}}
-      <div class="col xl6">
+  <div class="col s12">
+
+    {{#if notes.length}}
+      {{#each notes}}
         <div class="note card hoverable">
           <div class="card-content">
             <span class="card-title">{{title}}</span>
@@ -27,15 +28,15 @@
             <button name="toRestore" value="true" class="btn-restore waves-effect btn-flat"><i class="material-icons blue-text text-accent-2">restore</i></button>
           </div>
         </div>
+      {{/each}}
+      <div class="col s12 l6 offset-l3 hide" id="card_with_title_bin_is_empty">
+        <div class="card-panel center-align">Корзина пуста</div>
       </div>
-    {{/each}}
-    <div class="col s12 l6 offset-l3 hide" id="card_with_title_bin_is_empty">
-      <div class="card-panel center-align">Корзина пуста</div>
-    </div>
-  {{else}}
-    <div class="col s12 l6 offset-l3" id="card_with_title_bin_is_empty">
-      <div class="card-panel center-align">Корзина пуста</div>
-    </div>
-  {{/if}}
+    {{else}}
+      <div class="col s12 l6 offset-l3" id="card_with_title_bin_is_empty">
+        <div class="card-panel center-align">Корзина пуста</div>
+      </div>
+    {{/if}}
 
+  </div>
 </div>

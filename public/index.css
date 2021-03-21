@@ -101,3 +101,9 @@
 .progress-color {
   background-color: #b2d2ea !important;
 }
+
+.card .card-content p {
+  overflow-x: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+}
