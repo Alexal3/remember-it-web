@@ -279,6 +279,8 @@ function handleClickOnNote(event, note) {
   }
 
   if (event.target.closest('.btn-delete-forever')) {
+    if (!confirm('Удалить заметку навсегда?')) return;
+
     fetch('/delete-forever-note', {
       method: 'delete',
       headers: {

@@ -9,6 +9,8 @@
 
 .input-field .materialize-textarea:focus {
   border-bottom: 1px solid #448AFF !important;
+  -webkit-box-shadow: 0 1px 0 0 #448AFF !important;
+  -moz-box-shadow: 0 1px 0 0 #448AFF !important;
   box-shadow: 0 1px 0 0 #448AFF !important;
 }
 
@@ -32,6 +34,8 @@
 .input-field input[type=password]:focus,
 .input-field input[type=text]:focus {
   border-bottom: 1px solid #448AFF !important;
+  -webkit-box-shadow: 0 1px 0 0 #448AFF !important;
+  -moz-box-shadow: 0 1px 0 0 #448AFF !important;
   box-shadow: 0 1px 0 0 #448AFF !important;
 }
 
@@ -63,6 +67,8 @@
 
 .alert, .info {
   padding: 10px 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
   border-radius: 10px;
   text-align: center;
   margin: 10px 0;
@@ -79,22 +85,43 @@
 }
 
 .avatar {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
   border-radius: 50%;
   width: 64px;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 
 .disabled {
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 
 .input-field input[type=email] + label,
 .input-field input[type=password] + label,
 .input-field input[type=text] + label {
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.input-field textarea + label {
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 
 .file-path {
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 
@@ -106,4 +133,46 @@
   overflow-x: hidden;
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
+}
+
+.card-action {
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.sidenav {
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.email {
+  -ms-user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  user-select: text;
+}
+
+.brand-logo {
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.userSelectNone {
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.modal-footer {
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }

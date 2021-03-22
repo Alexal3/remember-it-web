@@ -4,7 +4,7 @@
 
       <h4 class="center-align">Настройки профиля</h4>
 
-      <p>&nbsp;</p>
+      <p class="userSelectNone">&nbsp;</p>
 
       <div class="center-align">
         {{#if avatarURL}}
@@ -26,14 +26,17 @@
       <div id="avatar_progress" class="progress progress-color hide">
         <div class="indeterminate blue lighten-1"></div>
       </div>
-      <button id="btn_save_avatar" class="blue accent-2 btn waves-effect waves-light">Сохранить</button>
-      {{#if avatarURL}}
-        <button id="btn_delete_avatar" class="blue accent-2 btn waves-effect waves-light">Удалить аватар</button>
-      {{else}}
-        <button id="btn_delete_avatar" class="blue accent-2 btn waves-effect waves-light disabled">Удалить аватар</button>
-      {{/if}}
 
-      <p>&nbsp;</p>
+      <div class="userSelectNone">
+        <button id="btn_save_avatar" class="blue accent-2 btn waves-effect waves-light">Сохранить</button>
+        {{#if avatarURL}}
+          <button id="btn_delete_avatar" class="blue accent-2 btn waves-effect waves-light">Удалить аватар</button>
+        {{else}}
+          <button id="btn_delete_avatar" class="blue accent-2 btn waves-effect waves-light disabled">Удалить аватар</button>
+        {{/if}}
+      </div>
+
+      <p class="userSelectNone">&nbsp;</p>
 
       <p class="bold-font">Ваша почта - {{email}}</p>
       <div class="input-field">
@@ -46,7 +49,7 @@
       </div>
       <button id="btn_save_email" class="blue accent-2 btn waves-effect waves-light">Сохранить</button>
 
-      <p>&nbsp;</p>
+      <p class="userSelectNone">&nbsp;</p>
 
       <p class="bold-font">Изменить пароль</p>
       <div class="input-field">

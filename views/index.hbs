@@ -15,8 +15,8 @@
       <div class="nav-wrapper">
         <a href="http://alexal3.com" class="right brand-logo"><img src="logo2.png"></a>
         <ul class="left">
-          <li><a class="waves-effect btn blue accent-2 modal-trigger" href="#register-modal">Регистрация</a></li>
-          <li><a class="waves-effect btn blue accent-2 modal-trigger" href="#login-modal">Вход</a></li>
+          <li><a class="waves-effect waves-light btn blue accent-2 modal-trigger" href="#register-modal">Регистрация</a></li>
+          <li><a class="waves-effect waves-light btn blue accent-2 modal-trigger" href="#login-modal">Вход</a></li>
         </ul>
       </div>
     </nav>
@@ -28,7 +28,7 @@
         <div class="container">
           <h3>Просто попробуйте!</h3>
 
-          <p>&nbsp;</p>
+          <p class="userSelectNone">&nbsp;</p>
 
           <div class="card hoverable">
             <div class="card-content">
@@ -74,10 +74,12 @@
         <div class="container">
           <h3>Нравится?</h3>
 
-          <p>&nbsp;</p>
+          <p class="userSelectNone">&nbsp;</p>
           
-          <button class="waves-effect waves-light btn blue accent-2 modal-trigger" href="#register-modal">Регистрация</button>
-          <button class="waves-effect waves-light btn blue accent-2 modal-trigger btn-login-in-landing" href="#login-modal">Вход</button>
+          <div class="userSelectNone">
+            <button class="waves-effect waves-light btn blue accent-2 modal-trigger" href="#register-modal">Регистрация</button>
+            <button class="waves-effect waves-light btn blue accent-2 modal-trigger btn-login-in-landing" href="#login-modal">Вход</button>
+          </div>
         </div>
       </div>
     </div>
@@ -87,7 +89,7 @@
     <div class="modal-content">
       <div class="container">
         <h4 class="center-align">Регистрация</h4>
-        <p>&nbsp;</p>
+        <p class="userSelectNone">&nbsp;</p>
         <div class="input-field">
           <input id="reg_email" type="email" name="email" class="validate">
           <label for="reg_email">Адрес эл. почты</label>
@@ -114,7 +116,7 @@
     <div class="modal-content">
       <div class="container">
         <h4 class="center-align">Вход</h4>
-        <p>&nbsp;</p>
+        <p class="userSelectNone">&nbsp;</p>
         <div class="input-field">
           <input id="login_email" type="email" name="email" class="validate">
           <label for="login_email">Адрес эл. почты</label>
@@ -128,7 +130,7 @@
     </div>
     <div class="modal-footer">
       <div class="container">
-        <button class="btn-forgot-password waves-effect waves-light btn-flat modal-trigger" href="#forgot-password">Забыли пароль?</button>
+        <button class="btn-forgot-password waves-effect btn-flat modal-trigger" href="#forgot-password">Забыли пароль?</button>
         <button class="btn-login modal-close waves-effect waves-light blue accent-2 btn">Готово!</button>
       </div>
     </div>
@@ -138,7 +140,7 @@
     <div class="modal-content">
       <div class="container">
         <h4 class="center-align">Сброс пароля</h4>
-        <p>&nbsp;</p>
+        <p class="userSelectNone">&nbsp;</p>
         <div class="input-field">
           <input id="reset_password_email" type="email" name="email" class="validate">
           <label for="reset_password_email">Адрес эл. почты</label>
