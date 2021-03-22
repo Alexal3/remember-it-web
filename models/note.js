@@ -3,11 +3,11 @@ const sequelize = require('../utils/database');
 
 const note = sequelize.define('note', {
   title: {
-    type: Sequelize.STRING,
+    type: Sequelize.STRING(100),
     allowNull: true
   },
   body: {
-    type: Sequelize.STRING,
+    type: Sequelize.STRING(800),
     allowNull: true
   },
   archived: {
