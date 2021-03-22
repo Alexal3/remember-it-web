@@ -7,6 +7,8 @@ const resetEmail = require('../emails/resetPassword');
 const router = Router();
 const jsonParser = require('express').json();
 const {Op} = require("sequelize");
+const {validationResult} = require('express-validator');
+const {resetValidators} = require('../utils/resetValidators');
 
 const transporter = nodemailer.createTransport({
   host: "smtp.ethereal.email",
@@ -87,8 +89,16 @@ router.get('/:token', async (req, res) => {
   }
 });
 
-router.put('/set-new-password', jsonParser, async (req, res) => {
+router.put('/set-new-password', jsonParser, resetValidators, async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.json({
+        status: 'error',
+        description: errors.array()[0].msg
+      });
+    }
+
     const user = await User.findOne({
       where: {
         id: req.body.userId,

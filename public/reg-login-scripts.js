@@ -120,6 +120,7 @@ if (btnResetPasswordDone) {
       },
       body: JSON.stringify({
         password: document.querySelector('#password').value,
+        passwordConfirm: document.querySelector('#password_confirm').value,
         userId: document.querySelector('input[name="userId"]').value,
         token: document.querySelector('input[name="token"]').value
       })

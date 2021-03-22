@@ -8,6 +8,14 @@ const jsonParser = require('express').json();
 
 router.post('/', redirectToNotesIfAuthenticated, jsonParser, loginValidators, async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.json({
+        status: 'error',
+        description: errors.array()[0].msg
+      });
+    }
+
     const {email} = req.body;
     const user = await User.findOne({
       where: {
@@ -23,14 +31,6 @@ router.post('/', redirectToNotesIfAuthenticated, jsonParser, loginValidators, as
       });
     }
 
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.json({
-        status: 'error',
-        description: errors.array()[0].msg
-      });
-    }
-    
     req.session.user = user;
     req.session.isAuthenticated = true;
 
