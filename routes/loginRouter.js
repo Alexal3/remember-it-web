@@ -15,6 +15,14 @@ router.post('/', redirectToNotesIfAuthenticated, jsonParser, loginValidators, as
       }
     });
 
+    if (!user.emailConfirmed) {
+      return res.json({
+        status: 'error',
+        description: 'Подтвердите свой email, чтобы войти!',
+        code: 'EMAIL_NOT_CONFIRMED'
+      });
+    }
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.json({

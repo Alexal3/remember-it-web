@@ -257,7 +257,7 @@ router.get('/new-email/:token', async (req, res) => {
     });
 
     res.render('changeEmail', {
-      success: 'Имейл успешно изменен'
+      success: 'Email успешно изменен'
     });
   } catch (err) {
     console.log(err);

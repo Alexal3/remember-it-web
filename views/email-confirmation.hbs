@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="{{csrf}}">
+  <title>Remember it! - заметки онлайн</title>
+  <link rel="stylesheet" href="/index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body class="blue">
+  <div class="navbar-fixed">
+    <nav class="blue darken-4">
+      <div class="nav-wrapper">
+        <a href="http://alexal3.com" class="right brand-logo"><img src="/logo2.png"></a>
+        <ul class="left">
+          <li><a class="waves-effect btn blue accent-2" href="/">На главную</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  <main>
+    <div class="row">
+      <div class="col s12 m6 l6 xl6 offset-m3 offset-l3 offset-xl3">
+        <div class="container">
+
+          {{#if error}}
+            <div class="alert">{{error}}</div>
+          {{else}}
+            <div class="info">{{success}}</div>
+
+            <div class="card hoverable">
+              <div class="card-content">
+                <h4 class="center-align">Теперь вы можете авторизоваться</h4>
+                <p>&nbsp;</p>
+                <div class="input-field">
+                  <input id="login_email" type="email" name="email" class="validate">
+                  <label for="login_email">Адрес эл. почты</label>
+                </div>
+                <div class="input-field">
+                  <input id="login_password" type="password" name="password" class="validate">
+                  <label for="login_password">Пароль</label>
+                </div>
+              </div>
+              <div class="card-action">
+                <button class="btn-login waves-effect waves-light blue accent-2 btn">Готово!</button>
+              </div>
+            </div>
+          {{/if}}
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/reg-login-scripts.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+</html>

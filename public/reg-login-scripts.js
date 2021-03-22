@@ -24,7 +24,7 @@ if (btnReg) {
     .then(res => res.json())
     .then(result => {
       if (result.status === 'error') alert(`Ошибка: ${result.description}`);
-      if (result.status === 'success') location.pathname = '/notes';
+      if (result.status === 'success') alert('На почту выслано письмо для подтверждения.');
     })
     .catch(err => alert(`Ошибка: ${err}`));
   });
@@ -47,7 +47,38 @@ if (btnLogin) {
     })
     .then(res => res.json())
     .then(result => {
-      if (result.status === 'error') alert(`Ошибка: ${result.description}`);
+      if (result.status === 'error') {
+        alert(`Ошибка: ${result.description}`);
+      }
+
+      if (result.code === 'EMAIL_NOT_CONFIRMED') {
+        let sendEmail = confirm('Выслать ссылку подтверждения на почту еще раз?');
+
+        if (sendEmail) {
+          fetch('/register/send-confirm-email', {
+            method: 'post',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8',
+              'CSRF-Token': token
+            },
+            body: JSON.stringify({
+              email: document.querySelector('#login_email').value
+            })
+          })
+          .then(res => res.json())
+          .then(result => {
+            if (result.status === 'error') {
+              alert(`Ошибка: ${result.description}`);
+            }
+
+            if (result.status === 'success') {
+              alert('Письмо успешно выслано');
+            }
+          })
+          .catch(err => alert(`Ошибка: ${err}`));
+        }
+      }
+
       if (result.status === 'success') location.pathname = '/notes';
     })
     .catch(err => alert(`Ошибка: ${err}`));
