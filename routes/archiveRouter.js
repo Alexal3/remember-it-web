@@ -13,7 +13,7 @@ router.get('/', redirectToIndexIfNotAuthenticated, async (req, res) => {
       }
     })
     
-    notes.sort((a, b) => b - a);
+    notes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   
     let locals = {
       layout: 'notes',
