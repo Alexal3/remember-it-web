@@ -24,6 +24,8 @@ document.querySelector('#button_create_note_example').addEventListener('click', 
   if (document.querySelector('#note_example .card-content .card-title').textContent === '' && document.querySelector('#note_example .card-content p').textContent === '') {
     document.querySelector('#note_example .card-content .empty_note_text').classList.remove('hide');
   }
+
+  document.querySelector('#create_note').style.height = '45px';
 });
 
 document.querySelector('#note_example_edit').addEventListener('click', () => {
