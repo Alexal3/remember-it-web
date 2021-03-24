@@ -1,7 +1,6 @@
 const {Router} = require('express');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
-const nodemailer = require('nodemailer');
 const User = require('../models/user');
 const resetEmail = require('../emails/resetPassword');
 const router = Router();
@@ -9,15 +8,7 @@ const jsonParser = require('express').json();
 const {Op} = require("sequelize");
 const {validationResult} = require('express-validator');
 const {resetValidators} = require('../utils/resetValidators');
-
-const transporter = nodemailer.createTransport({
-  host: "smtp.ethereal.email",
-  port: 587,
-  auth: {
-    user: 'damien.heller8@ethereal.email', 
-    pass: 'wH19wvJNRmp7v2Ttzb'
-  }
-});
+const transporter =  require('../utils/email');
 
 router.put('/', jsonParser, (req, res) => {
   try {

@@ -1,7 +1,6 @@
 const {Router} = require('express');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
-const nodemailer = require('nodemailer');
 const {validationResult} = require('express-validator');
 const redirectToIndexIfNotAuthenticated = require('../middleware/redirectToIndexIfNotAuthenticated');
 const User = require('../models/user');
@@ -14,15 +13,7 @@ const fs = require("fs");
 const avatar = require('../middleware/avatar');
 const gm = require('gm');
 const {Op} = require("sequelize");
-
-const transporter = nodemailer.createTransport({
-  host: "smtp.ethereal.email",
-  port: 587,
-  auth: {
-    user: 'damien.heller8@ethereal.email', 
-    pass: 'wH19wvJNRmp7v2Ttzb'
-  }
-});
+const transporter =  require('../utils/email');
 
 const setNewAvatar = async (req, res) => {
   const user = await User.findByPk(req.user.id);
