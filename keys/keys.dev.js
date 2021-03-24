@@ -9,6 +9,6 @@ module.exports = {
   DB_PORT: '3306',
   EMAIL_HOST: 'smtp.ethereal.email',
   EMAIL_PORT: 587,
-  EMAIL_USER: 'johnathon5@ethereal.email', 
-  EMAIL_PASSWORD: 'pARVre83tgA9ZUJ4mE'
+  EMAIL_USER: 'davonte.ziemann13@ethereal.email', 
+  EMAIL_PASSWORD: 'N1uqxvPeXG4PMQXYrw'
 };
