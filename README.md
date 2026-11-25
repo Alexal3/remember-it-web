@@ -10,7 +10,7 @@ Pet-project: web service for taking notes written in Node.js.
 
 3. Create an account on [Ethereal](http://ethereal.email) website.
 
-4. Edit .env file: change the content of EMAIL_USER and EMAIL_PASSWORD variables to the respective values.
+4. Edit .env file: change the content of EMAIL_USER and EMAIL_PASSWORD to the respective values.
 
 5. Run `docker compose up -d` in PowerShell or Command Prompt.
 
